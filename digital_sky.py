@@ -7,10 +7,10 @@
 # high level Python port of Adafruit's NeoPixel Arduino library in strandtest.py.
 #
 # This code will animate a number of WS281x LEDs displaying rainbow colors.
-import sys,time, urllib, traceback
+import sys,time, urllib, traceback, random
 
 from PIL import Image
-from numpy import array
+from numpy import array,bitwise_xor,dstack,full
 from neopixel import *
 from twisted.internet import stdio, reactor
 from twisted.internet.task import LoopingCall
@@ -136,32 +136,77 @@ class LED_Control():
         urllib.urlretrieve(sys.argv[1], "file.jpg")
         img = Image.open("file.jpg")
         self.img = img.resize((self.strip.numPixels(),img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
-        self.arr = array(img)
+        img_tmp = array(self.img)
+        b_tmp=full((img_tmp.shape[0],img_tmp.shape[1],1),0) # An extra 2D array of single bytes to store 6812B WW pixel data
+        self.arr=dstack((img_tmp,b_tmp)) # Stack the extra bytes onto the 24bpp array to get 32bpp
         self.row = 0
         self.strip.begin()
+        self.sweep_pos = 0
+        self.chaser1 = 0
+        self.chaser2 = 0
+
+    def the_chase(self):
+        # print("Image Row: ", self.row)
+        try:
+            self.chaser1 = (self.chaser1 + random.randint(-2,2)) % LED_COUNT
+            self.chaser2 = (self.chaser2 + random.randint(-2,2)) % LED_COUNT
+            row_arr=full((self.img.size[0],4),0)
+            row_arr[self.chaser1]=[255,0,0,0]
+            row_arr[self.chaser2]=[0,0,255,0]
+            return row_arr
+        except Exception as err:
+            print(err)
+            traceback.print_exc(file=sys.stdout)
+
+    def sweep(self):
+        # print("Image Row: ", self.row)
+        try:
+            if self.sweep_pos == LED_COUNT-1:
+                self.sweep_pos = 0
+            else:
+                self.sweep_pos += 1
+            row_arr=full((self.img.size[0],4),0)
+            row_arr[self.sweep_pos]=[255,255,255,255]
+            return row_arr
+        except Exception as err:
+            print(err)
+            traceback.print_exc(file=sys.stdout)
+
+
+    def image_repeater(self):
+        # print("Image Row: ", self.row)
+        try:
+            if self.row ==len(self.arr)-1:
+                self.row = 0
+            else:
+                self.row += 1
+            return self.arr[self.row]
+        except Exception as err:
+            print(err)
+            traceback.print_exc(file=sys.stdout)
 
     def service_leds(self):
         # print("Image Row: ", self.row)
         # Update each LED color in the buffer.
         try:
+            data1=self.image_repeater()
+            data2=self.the_chase()
+            data3=self.sweep()
+            rowdata=bitwise_xor(data1, data2, data3)
             for i in range(self.strip.numPixels()):
                 if i % LAMP_LENGTH < STRIP_LEDS:
                         self.strip.setPixelColor(i, Color(self.datastore.ib,self.datastore.ww,self.datastore.nw,self.datastore.dw))
                 else:
                     # Pick a color based on LED position and an offset for animation.
                     # color = DOT_COLORS[(i + offset) % len(DOT_COLORS)]
-                    r=int(self.arr[self.row][i][0])
-                    g=int(self.arr[self.row][i][1])
-                    b=int(self.arr[self.row][i][2])
-                    w=self.datastore.np
+                    r=int(rowdata[i][0])
+                    g=int(rowdata[i][1])
+                    b=int(rowdata[i][2])
+                    w=int(rowdata[i][3])
                 # Set the LED color buffer value.
                     self.strip.setPixelColor(i, Color(r,g,b,w))
             # Send the LED color data to the hardware.
             self.strip.show()
-            if self.row ==len(self.arr)-1:
-                self.row = 0
-            else:
-                self.row += 1
         except Exception as err:
             print(err)
             traceback.print_exc(file=sys.stdout)
@@ -174,6 +219,6 @@ lights=LED_Control(datastore)
 if __name__ == "__main__":
     stdio.StandardIO(CLICommandProtocol(datastore))
     LEDTask = LoopingCall(lights.service_leds)
-    LEDTask.start(0.05)
+    LEDTask.start(0.03)
     reactor.run()
 
