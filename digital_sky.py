@@ -1,12 +1,7 @@
-# Example of low-level Python wrapper for rpi_ws281x library.
-# Author: Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
-#
-# This is an example of how to use the SWIG-generated _rpi_ws281x module.
-# You probably don't want to use this unless you are building your own library,
-# because the SWIG generated module is clunky and verbose.  Instead look at the
-# high level Python port of Adafruit's NeoPixel Arduino library in strandtest.py.
-#
-# This code will animate a number of WS281x LEDs displaying rainbow colors.
+# Controller code for Digital Sky lighting project.
+# This code is based upon the low level python wrapper for rpi_ws281x library
+# which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
+# This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 
 from PIL import Image
