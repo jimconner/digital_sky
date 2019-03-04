@@ -3,13 +3,13 @@
 # which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
-
 from PIL import Image
 from numpy import array, bitwise_xor, dstack, full
 from neopixel import *
-from effects.sweep import Sweep
-from effects.the_chase import The_chase
-from effects.image_repeater import Image_repeater
+from effects.sweep import sweep
+from effects.the_chase import the_chase
+from effects.image_repeater import image_repeater
+from filters.make_it_red import make_it_red
 
 # LED strip configuration:
 # LED_COUNT    = <whevs> # This value is now passed in as a parameter when LED_Control is instanciated.
@@ -28,24 +28,29 @@ class LED_Control():
         self.datastore = datastore
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         self.strip.begin()
-        self.sweeper=Sweep(LED_COUNT)
-        self.chaser=The_chase(LED_COUNT)
-        self.image_repeater=Image_repeater(LED_COUNT, sys.argv[1])
+        self.LED_COUNT=LED_COUNT
+        self.effects=[ \
+                image_repeater(LED_COUNT, sys.argv[1]), \
+                sweep(LED_COUNT), \
+                the_chase(LED_COUNT) \
+                ]
+        self.filters=[]
 
     def service_leds(self):
-        # print("Image Row: ", self.row)
-        # Update each LED color in the buffer.
         try:
-            data1=self.image_repeater.emit_row()
-            data2=self.chaser.emit_row()
-            data3=self.sweeper.emit_row()
-            rowdata=bitwise_xor(data1, data2, data3)
+            # Set up an empty blank row of RGBW pixels
+            rowdata=full((self.LED_COUNT,4),0)
+            # XOR on each pixel source effect in turn.
+            for effect in self.effects:
+                rowdata=bitwise_xor(rowdata, effect.emit_row())
+            # Pass the resulting rowdata through each filter in turn
+            for filt in self.filters:
+                rowdata=filt(rowdata)
+            # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % LAMP_LENGTH < STRIP_LEDS:
                         self.strip.setPixelColor(i, Color(self.datastore.ib,self.datastore.ww,self.datastore.nw,self.datastore.dw))
                 else:
-                    # Pick a color based on LED position and an offset for animation.
-                    # color = DOT_COLORS[(i + offset) % len(DOT_COLORS)]
                     r=int(rowdata[i][0])
                     g=int(rowdata[i][1])
                     b=int(rowdata[i][2])

@@ -7,9 +7,8 @@ import sys,time, urllib, traceback, random
 from PIL import Image
 from numpy import array,dstack,full
 
-class Image_repeater():
+class image_repeater():
     def __init__(self, width, img_url):
-        print(img_url)
         urllib.urlretrieve(img_url, "file.jpg")
         img = Image.open("file.jpg")
         self.img = img.resize((width,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.

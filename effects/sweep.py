@@ -4,7 +4,7 @@
 import sys, traceback, random
 from numpy import array,full
 
-class Sweep():
+class sweep():
     def __init__(self,max_led):
         self.sweep_pos=0
         self.max_led=max_led
