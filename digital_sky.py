@@ -12,7 +12,6 @@ from twisted.internet.task import LoopingCall
 from twisted.protocols import basic
 from twisted.web import client
 from twisted.web.resource import Resource
-from effects import sweep, the_chase, image_repeater
 from cli import CLICommandProtocol
 from led_control import LED_Control
 
