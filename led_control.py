@@ -7,8 +7,10 @@ from PIL import Image
 from numpy import array, bitwise_xor, dstack, full
 from neopixel import *
 from effects.sweep import sweep
+from effects.bar import bar
 from effects.the_chase import the_chase
 from effects.image_repeater import image_repeater
+from effects.crumbling_in import crumbling_in
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
@@ -30,9 +32,11 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.effects=[ \
-                image_repeater(LED_COUNT, sys.argv[1]), \
-                sweep(LED_COUNT), \
-                the_chase(LED_COUNT) \
+                #image_repeater(LED_COUNT, sys.argv[1]), \
+                #sweep(LED_COUNT), \
+                the_chase(LED_COUNT), \
+                crumbling_in(LED_COUNT), \
+                #bar(LED_COUNT) 
                 ]
         self.filters=[]
 
