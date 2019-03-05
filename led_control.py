@@ -32,9 +32,9 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.effects=[ \
-                #image_repeater(LED_COUNT, sys.argv[1]), \
+                image_repeater(LED_COUNT, sys.argv[1]), \
                 #sweep(LED_COUNT), \
-                the_chase(LED_COUNT), \
+                #the_chase(LED_COUNT), \
                 crumbling_in(LED_COUNT), \
                 #bar(LED_COUNT) 
                 ]
@@ -53,7 +53,7 @@ class LED_Control():
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % LAMP_LENGTH < STRIP_LEDS:
-                        self.strip.setPixelColor(i, Color(self.datastore.ib,self.datastore.ww,self.datastore.nw,self.datastore.dw))
+                        self.strip.setPixelColor(i, Color(self.datastore.strips[i][0],self.datastore.strips[i][1],self.datastore.strips[i][2],self.datastore.strips[i][3]))
                 else:
                     r=int(rowdata[i][0])
                     g=int(rowdata[i][1])

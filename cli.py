@@ -81,23 +81,19 @@ class CLICommandProtocol(basic.LineReceiver):
         # stop the reactor, only because this is meant to be run in Stdio.
         reactor.stop()
 
-    def do_ib(self, val):
+    def do_ib(self, pos, val):
         """Set level if Ice Blue strips (0-255)"""
-        self.datastore.ib = int(val)
+        self.datastore.strips[int(pos)][0] = int(val)
 
-    def do_dw(self, val):
+    def do_dw(self, pos, val):
         """Set level if Daylight White strips (0-255)"""
-        self.datastore.dw = int(val)
+        self.datastore.strips[int(pos)][1] = int(val)
 
-    def do_nw(self, val):
+    def do_nw(self, pos, val):
         """Set level if Natural White strips (0-255)"""
-        self.datastore.nw = int(val)
+        self.datastore.strips[int(pos)][2] = int(val)
 
-    def do_ww(self, val):
+    def do_ww(self, pos, val):
         """Set level if Warm White strips (0-255)"""
-        self.datastore.ww = int(val)
-
-    def do_np(self, val):
-        """Set level if Neopixel Warm White strips (0-255)"""
-        self.datastore.np = int(val)
+        self.datastore.strips[int(pos)][3] = int(val)
 

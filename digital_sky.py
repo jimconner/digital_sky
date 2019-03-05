@@ -5,7 +5,7 @@
 import sys,time, urllib, traceback, random
 
 from PIL import Image
-from numpy import array, bitwise_xor, dstack, full
+from numpy import array, bitwise_xor, dstack, full, int8
 from neopixel import *
 from twisted.internet import stdio, reactor
 from twisted.internet.task import LoopingCall
@@ -24,11 +24,7 @@ LED_COUNT      = 210      # Number of LED pixels.
 
 class Datastore_Data(Resource):
     def __init__(self):
-        self.ww = 0
-        self.nw = 0
-        self.ib = 0
-        self.dw = 0
-        self.np = 0
+        self.strips = full((LED_COUNT,4),0, dtype=int8)
 
 datastore=Datastore_Data()
 lights=LED_Control(datastore, LED_COUNT)
