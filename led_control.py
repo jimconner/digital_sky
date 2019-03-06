@@ -4,7 +4,7 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 from PIL import Image
-from numpy import array, bitwise_xor, dstack, full
+from numpy import array, bitwise_xor, dstack, full, uint8
 from neopixel import *
 from effects.sweep import sweep
 from effects.bar import bar
@@ -32,10 +32,10 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.effects=[ \
-                image_repeater(LED_COUNT, sys.argv[1]), \
+                #image_repeater(LED_COUNT, sys.argv[1]), \
+                crumbling_in(LED_COUNT), \
                 #sweep(LED_COUNT), \
                 #the_chase(LED_COUNT), \
-                crumbling_in(LED_COUNT), \
                 #bar(LED_COUNT) 
                 ]
         self.filters=[]
@@ -53,7 +53,11 @@ class LED_Control():
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % LAMP_LENGTH < STRIP_LEDS:
-                        self.strip.setPixelColor(i, Color(self.datastore.strips[i][0],self.datastore.strips[i][1],self.datastore.strips[i][2],self.datastore.strips[i][3]))
+                        ib=int(self.datastore.strips[i][0])
+                        ww=int(self.datastore.strips[i][1])
+                        nw=int(self.datastore.strips[i][2])
+                        dw=int(self.datastore.strips[i][3])
+                        self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
                 else:
                     r=int(rowdata[i][0])
                     g=int(rowdata[i][1])

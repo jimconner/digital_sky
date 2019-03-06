@@ -1,11 +1,9 @@
 # Controller code for Digital Sky lighting project.
-# This code is based upon the low level python wrapper for rpi_ws281x library
-# which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 
 from PIL import Image
-from numpy import array, bitwise_xor, dstack, full
+from numpy import array, bitwise_xor, dstack, full, uint8
 from neopixel import *
 from twisted.internet import stdio, reactor
 from twisted.internet.task import LoopingCall
@@ -83,17 +81,18 @@ class CLICommandProtocol(basic.LineReceiver):
 
     def do_ib(self, pos, val):
         """Set level if Ice Blue strips (0-255)"""
-        self.datastore.strips[int(pos)][0] = int(val)
-
-    def do_dw(self, pos, val):
-        """Set level if Daylight White strips (0-255)"""
-        self.datastore.strips[int(pos)][1] = int(val)
-
-    def do_nw(self, pos, val):
-        """Set level if Natural White strips (0-255)"""
-        self.datastore.strips[int(pos)][2] = int(val)
+        self.datastore.strips[int(pos)][0] = uint8(val)
 
     def do_ww(self, pos, val):
         """Set level if Warm White strips (0-255)"""
-        self.datastore.strips[int(pos)][3] = int(val)
+        self.datastore.strips[int(pos)][1] = uint8(val)
+
+    def do_nw(self, pos, val):
+        """Set level if Natural White strips (0-255)"""
+        self.datastore.strips[int(pos)][2] = uint8(val)
+
+    def do_dw(self, pos, val):
+        """Set level if Daylight White strips (0-255)"""
+        self.datastore.strips[int(pos)][3] = uint8(val)
+
 
