@@ -6,11 +6,11 @@ import sys,time, urllib, traceback, random
 from PIL import Image
 from numpy import array, bitwise_xor, dstack, full, uint8
 from neopixel import *
-from effects.sweep import sweep
-from effects.bar import bar
-from effects.the_chase import the_chase
-from effects.image_repeater import image_repeater
-from effects.crumbling_in import crumbling_in
+from animations.sweep import sweep
+from animations.bar import bar
+from animations.the_chase import the_chase
+from animations.image_repeater import image_repeater
+from animations.crumbling_in import crumbling_in
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:

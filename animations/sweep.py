@@ -1,4 +1,4 @@
-# Sweep effect
+# Sweep animation
 # Moves a dot from one side to the other, one pixel at a time.
 
 import sys, traceback, random

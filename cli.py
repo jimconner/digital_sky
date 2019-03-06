@@ -2,15 +2,12 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 
-from PIL import Image
 from numpy import array, bitwise_xor, dstack, full, uint8
-from neopixel import *
 from twisted.internet import stdio, reactor
 from twisted.internet.task import LoopingCall
 from twisted.protocols import basic
 from twisted.web import client
 from twisted.web.resource import Resource
-from effects import sweep, the_chase, image_repeater
 
 class CLICommandProtocol(basic.LineReceiver):
     delimiter = b'\n' # unix terminal style newlines. remove this line
@@ -19,7 +16,7 @@ class CLICommandProtocol(basic.LineReceiver):
         self.datastore = datastore
 
     def connectionMade(self):
-        self.sendLine(b"Web checker console. Type 'help' for help.")
+        self.sendLine(b"Digital Sky Console. Type 'help' for help.")
 
     def lineReceived(self, line):
         # Ignore blank lines
