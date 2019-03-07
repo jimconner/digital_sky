@@ -12,6 +12,7 @@ from animations.the_chase import the_chase
 from animations.image_repeater import image_repeater
 from animations.crumbling_in import crumbling_in
 from animations.strip_sweep import strip_sweep
+from animations.inverse_strip_sweep import inverse_strip_sweep
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
@@ -33,14 +34,14 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.animations=[ \
-                #image_repeater(LED_COUNT, sys.argv[1]), \
-                crumbling_in(LED_COUNT), \
+                image_repeater(LED_COUNT, sys.argv[1]), \
+                #crumbling_in(LED_COUNT), \
                 #sweep(LED_COUNT), \
                 #the_chase(LED_COUNT), \
                 #bar(LED_COUNT) 
                 ]
         self.strip_animations=[ \
-                strip_sweep(LED_COUNT), \
+                inverse_strip_sweep(LED_COUNT), \
                 ]
         self.filters=[]
 
@@ -73,6 +74,8 @@ class LED_Control():
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
+	    print(rowdata)
+	    print(self.datastore.strips)
             print(err)
             traceback.print_exc(file=sys.stdout)
 
