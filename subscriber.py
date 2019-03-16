@@ -1,4 +1,4 @@
-import sys
+import sys, json
 
 from twisted.internet.defer       import inlineCallbacks, DeferredList
 from twisted.internet             import reactor
@@ -18,8 +18,9 @@ from mqtt.client.factory import MQTTFactory
 class MQTTService(ClientService):
 
 
-    def __init__(self, endpoint, factory, log):
+    def __init__(self, endpoint, factory, log, datastore):
         self.log=log
+        self.datastore=datastore
         ClientService.__init__(self, endpoint, factory, retryPolicy=backoffPolicy())
 
 
@@ -61,7 +62,7 @@ class MQTTService(ClientService):
 
         def _logAll(*args):
             self.log.debug("all subscriptions complete args={args!r}",args=args)
-
+            
         d1 = self.protocol.subscribe("hermes/hotword/default/detected", 2 )
         d1.addCallbacks(_logGrantedQoS, _logFailure)
 
@@ -81,7 +82,20 @@ class MQTTService(ClientService):
         Callback Receiving messages from publisher
         '''
         self.log.debug("msg={payload}", payload=payload)
-
+        payload=json.loads(str(payload))
+        if topic == 'hermes/intent/jimconner:warm':
+        	print("Warm White")
+        	print(payload)
+	        self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:daylight':
+        	print("Daylight White")
+	        self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:natural':
+        	print("Natural White")
+	        self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:blue':
+        	print("Ice Blue")
+	        self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
 
     def onDisconnection(self, reason):
         '''

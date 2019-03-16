@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Controller code for Digital Sky lighting project.
 # This code is based upon the low level python wrapper for rpi_ws281x library
 # which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
@@ -31,6 +32,7 @@ if len(sys.argv) != 2 :
 
 class Datastore_Data(Resource):
     def __init__(self):
+        self.strip_vals = [0,0,0,0]
         self.strips = full((LED_COUNT,4),0, dtype=uint8)
 
 # ----------------
@@ -60,7 +62,6 @@ def startLogging(console=True, filepath=None):
     if console:
         observers.append( FilteringLogObserver(observer=textFileLogObserver(sys.stdout),  
             predicates=[logLevelFilterPredicate] ))
-    
     if filepath is not None and filepath != "":
         observers.append( FilteringLogObserver(observer=textFileLogObserver(open(filepath,'a')), 
             predicates=[logLevelFilterPredicate] ))
@@ -88,7 +89,7 @@ if __name__ == "__main__":
     setLogLevel(namespace='__main__', levelStr='debug')
     factory    = MQTTFactory(profile=MQTTFactory.SUBSCRIBER)
     myEndpoint = clientFromString(reactor, BROKER)
-    serv       = MQTTService(myEndpoint, factory, log)
+    serv       = MQTTService(myEndpoint, factory, log, datastore)
     serv.startService()
     reactor.run()
 

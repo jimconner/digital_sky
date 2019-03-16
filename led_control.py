@@ -43,7 +43,7 @@ class LED_Control():
                 ]
         self.strip_animations=[ \
                 #inverse_strip_sweep(LED_COUNT), \
-                set_strips(LED_COUNT, 0,16,0,0), \
+                set_strips(LED_COUNT, self.datastore), \
                 ]
         self.filters=[]
 
@@ -78,7 +78,6 @@ class LED_Control():
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
-	    print(rowdata)
 	    print(self.datastore.strips)
             print(err)
             traceback.print_exc(file=sys.stdout)
