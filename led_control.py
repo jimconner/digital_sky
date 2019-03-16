@@ -4,7 +4,7 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 from PIL import Image
-from numpy import array, bitwise_xor, dstack, full, uint8
+from numpy import array, bitwise_xor, greater, dstack, full, uint8
 from neopixel import *
 from animations.sweep import sweep
 from animations.bar import bar
@@ -13,6 +13,7 @@ from animations.image_repeater import image_repeater
 from animations.crumbling_in import crumbling_in
 from animations.strip_sweep import strip_sweep
 from animations.inverse_strip_sweep import inverse_strip_sweep
+from animations.set_strips import set_strips
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
@@ -34,20 +35,23 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.animations=[ \
-                image_repeater(LED_COUNT, sys.argv[1]), \
+                #image_repeater(LED_COUNT, sys.argv[1]), \
                 #crumbling_in(LED_COUNT), \
-                #sweep(LED_COUNT), \
-                #the_chase(LED_COUNT), \
+                sweep(LED_COUNT), \
+                the_chase(LED_COUNT), \
                 #bar(LED_COUNT) 
                 ]
         self.strip_animations=[ \
-                inverse_strip_sweep(LED_COUNT), \
+                #inverse_strip_sweep(LED_COUNT), \
+                set_strips(LED_COUNT, 16,0,0,0), \
                 ]
         self.filters=[]
 
     def service_leds(self):
         try:
-            self.datastore.strips=self.strip_animations[0].emit_row()
+            self.datastore.strips=full((self.LED_COUNT,4),0)
+            for animation in self.strip_animations:
+            	self.datastore.strips=bitwise_xor(self.datastore.strips, animation.emit_row())
             # Set up an empty blank row of RGBW pixels
             rowdata=full((self.LED_COUNT,4),0)
             # XOR on each pixel source effect in turn.
