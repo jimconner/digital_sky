@@ -43,7 +43,7 @@ class LED_Control():
                 ]
         self.strip_animations=[ \
                 #inverse_strip_sweep(LED_COUNT), \
-                set_strips(LED_COUNT, 16,0,0,0), \
+                set_strips(LED_COUNT, 0,16,0,0), \
                 ]
         self.filters=[]
 
