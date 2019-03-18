@@ -4,16 +4,9 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib, traceback, random
 from PIL import Image
-from numpy import array, bitwise_xor, greater, dstack, full, uint8
+from numpy import array, bitwise_xor, greater, dstack, full, uint8, maximum
 from neopixel import *
-from animations.sweep import sweep
-from animations.bar import bar
-from animations.the_chase import the_chase
-from animations.image_repeater import image_repeater
-from animations.crumbling_in import crumbling_in
-from animations.strip_sweep import strip_sweep
-from animations.inverse_strip_sweep import inverse_strip_sweep
-from animations.set_strips import set_strips
+from animations import *
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
@@ -35,15 +28,15 @@ class LED_Control():
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
         self.animations=[ \
-                #image_repeater(LED_COUNT, sys.argv[1]), \
-                #crumbling_in(LED_COUNT), \
-                sweep(LED_COUNT), \
-                the_chase(LED_COUNT), \
-                #bar(LED_COUNT) 
+                image_repeater.image_repeater(LED_COUNT, sys.argv[1]), \
+                crumbling_in.crumbling_in(LED_COUNT), \
+                sweep.sweep(LED_COUNT), \
+                the_chase.the_chase(LED_COUNT), \
+                #bar.bar(LED_COUNT) 
                 ]
         self.strip_animations=[ \
-                #inverse_strip_sweep(LED_COUNT), \
-                set_strips(LED_COUNT, self.datastore), \
+                #inverse_strip_sweep.inverse_strip_sweep(LED_COUNT), \
+                set_strips.set_strips(LED_COUNT, self.datastore), \
                 ]
         self.filters=[]
 
@@ -56,7 +49,7 @@ class LED_Control():
             rowdata=full((self.LED_COUNT,4),0)
             # XOR on each pixel source effect in turn.
             for animation in self.animations:
-                rowdata=bitwise_xor(rowdata, animation.emit_row())
+                rowdata=maximum(rowdata, animation.emit_row())
             # Pass the resulting rowdata through each filter in turn
             for filt in self.filters:
                 rowdata=filt(rowdata)
