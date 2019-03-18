@@ -6,7 +6,6 @@ import sys,time, urllib, traceback, random
 from PIL import Image
 from numpy import array, bitwise_xor, greater, dstack, full, uint8, maximum
 from neopixel import *
-from animations import *
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
@@ -27,31 +26,20 @@ class LED_Control():
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         self.strip.begin()
         self.LED_COUNT=LED_COUNT
-        self.animations=[ \
-                image_repeater.image_repeater(LED_COUNT, sys.argv[1]), \
-                crumbling_in.crumbling_in(LED_COUNT), \
-                sweep.sweep(LED_COUNT), \
-                the_chase.the_chase(LED_COUNT), \
-                #bar.bar(LED_COUNT) 
-                ]
-        self.strip_animations=[ \
-                #inverse_strip_sweep.inverse_strip_sweep(LED_COUNT), \
-                set_strips.set_strips(LED_COUNT, self.datastore), \
-                ]
-        self.filters=[]
+
 
     def service_leds(self):
         try:
             self.datastore.strips=full((self.LED_COUNT,4),0)
-            for animation in self.strip_animations:
+            for animation in self.datastore.strip_animations:
             	self.datastore.strips=bitwise_xor(self.datastore.strips, animation.emit_row())
             # Set up an empty blank row of RGBW pixels
             rowdata=full((self.LED_COUNT,4),0)
             # XOR on each pixel source effect in turn.
-            for animation in self.animations:
+            for animation in self.datastore.animations:
                 rowdata=maximum(rowdata, animation.emit_row())
             # Pass the resulting rowdata through each filter in turn
-            for filt in self.filters:
+            for filt in self.datastore.filters:
                 rowdata=filt(rowdata)
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
