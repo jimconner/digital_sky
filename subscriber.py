@@ -84,18 +84,21 @@ class MQTTService(ClientService):
         self.log.debug("msg={payload}", payload=payload)
         payload=json.loads(str(payload))
         if topic == 'hermes/intent/jimconner:warm':
-        	print("Warm White")
-        	print(payload)
+        	self.log.info("Warm White")
 	        self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:daylight':
-        	print("Daylight White")
+        	self.log.info("Daylight White")
 	        self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:natural':
         	print("Natural White")
 	        self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:blue':
-        	print("Ice Blue")
+        	self.log.info("Ice Blue")
 	        self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:lights_off':
+        	self.log.info("Lights Off")
+	        self.datastore.strip_vals=[0,0,0,0]
+
 
     def onDisconnection(self, reason):
         '''
