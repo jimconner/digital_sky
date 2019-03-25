@@ -19,13 +19,13 @@ class inverse_strip_sweep():
                 if self.nextpos != self.colpos:
                     self.changestrip=1
                     #print("Cur Col: ", self.colpos, "Next: ",self.nextpos)
-	    if random.randint(0,10)==5:
-            	self.sweep_pos = (self.sweep_pos +1) % (self.max_led-1)
+            if random.randint(0,10)==5:
+                self.sweep_pos = (self.sweep_pos +1) % (self.max_led-1)
             row_arr=full((self.max_led,4),0)
             brt=((self.sweep_pos % 30)*8)
-	    curbg=240-((240*self.changestrip)>>8)
+            curbg=240-((240*self.changestrip)>>8)
             if self.changestrip > 0:
-		newbg=(240*self.changestrip)>>8
+                newbg=(240*self.changestrip)>>8
                 row_arr[int(((self.sweep_pos/30)-3)*30 % self.max_led)][self.nextpos]=newbg
                 row_arr[int(((self.sweep_pos/30)-2)*30 % self.max_led)][self.nextpos]=newbg
                 row_arr[int(((self.sweep_pos/30)-1)*30 % self.max_led)][self.nextpos]=(brt*self.changestrip)>>8
@@ -39,7 +39,7 @@ class inverse_strip_sweep():
                     self.changestrip += 1
                 else:
                     self.changestrip = 0
-	    	    curbg=240-((240*self.changestrip)>>8)
+                    curbg=240-((240*self.changestrip)>>8)
                     self.colpos = self.nextpos
             row_arr[int(((self.sweep_pos/30)-3)*30 % self.max_led)][self.colpos]=curbg
             row_arr[int(((self.sweep_pos/30)-2)*30 % self.max_led)][self.colpos]=curbg

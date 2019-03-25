@@ -16,13 +16,13 @@ class image_repeater():
         b_tmp=full((img_tmp.shape[0],img_tmp.shape[1],1),0) # An extra 2D array of single bytes to store 6812B WW pixel data
         self.arr=dstack((img_tmp,b_tmp)) # Stack the extra bytes onto the 24bpp array to get 32bpp
         self.row = 0
-	self.cycle = 4
-	self.count = 0
+        self.cycle = 4
+        self.count = 0
 
     def emit_row(self):
         # print("Image Row: ", self.row)
         try:
-	    self.count = (self.count+1) %self.cycle
+            self.count = (self.count+1) %self.cycle
             if self.row ==len(self.arr)-1:
                 self.row = 0
             else:
