@@ -59,7 +59,7 @@ class LED_Control():
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
-	    print(self.datastore.strips)
+            print(self.datastore.strips)
             print(err)
             traceback.print_exc(file=sys.stdout)
 
