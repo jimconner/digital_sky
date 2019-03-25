@@ -3,7 +3,7 @@
 # This code is based upon the low level python wrapper for rpi_ws281x library
 # which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
-import sys,time, urllib, traceback, random
+import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 import subscriber
 
 from PIL import Image
@@ -27,7 +27,7 @@ from twisted.logger   import (
 from animations import *
 
 if len(sys.argv) != 2 : 
-    print("Usage: "+sys.argv[0]+" <url_for_jpg_file>")
+    print(("Usage: "+sys.argv[0]+" <url_for_jpg_file>"))
     sys.exit(1)
 
 
@@ -37,9 +37,9 @@ class Datastore_Data(Resource):
         self.strips = full((LED_COUNT,4),0, dtype=uint8)
         self.animations=[ \
                 image_repeater.image_repeater(LED_COUNT, sys.argv[1]), \
-                crumbling_in.crumbling_in(LED_COUNT), \
-                sweep.sweep(LED_COUNT), \
-                the_chase.the_chase(LED_COUNT), \
+                #crumbling_in.crumbling_in(LED_COUNT), \
+                #sweep.sweep(LED_COUNT), \
+                #the_chase.the_chase(LED_COUNT), \
                 #bar.bar(LED_COUNT) 
                 ]
         self.strip_animations=[ \

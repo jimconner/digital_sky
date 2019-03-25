@@ -1,6 +1,6 @@
 # Controller code for Digital Sky lighting project.
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
-import sys,time, urllib, traceback, random
+import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 
 from numpy import array, bitwise_xor, dstack, full, uint8
 from twisted.internet import stdio, reactor

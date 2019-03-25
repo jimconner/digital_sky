@@ -82,22 +82,26 @@ class MQTTService(ClientService):
         Callback Receiving messages from publisher
         '''
         self.log.debug("msg={payload}", payload=payload)
-        payload=json.loads(str(payload))
+        try:
+            payload=json.loads(str(payload, 'utf-8', 'ignore'))
+        except:
+            print("*** Explodey Death thing when processing message from mqtt ***")
+            print(payload)
         if topic == 'hermes/intent/jimconner:warm':
-        	self.log.info("Warm White")
-	        self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
+            self.log.info("Warm White")
+            self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:daylight':
-        	self.log.info("Daylight White")
-	        self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
+            self.log.info("Daylight White")
+            self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:natural':
-        	print("Natural White")
-	        self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
+            print("Natural White")
+            self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:blue':
-        	self.log.info("Ice Blue")
-	        self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
+            self.log.info("Ice Blue")
+            self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:lights_off':
-        	self.log.info("Lights Off")
-	        self.datastore.strip_vals=[0,0,0,0]
+            self.log.info("Lights Off")
+            self.datastore.strip_vals=[0,0,0,0]
 
 
     def onDisconnection(self, reason):

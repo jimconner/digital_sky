@@ -2,14 +2,14 @@
 # Fetches an image from the given URL, resizes it to num_pixels width
 # and then emits it one row at a time from top to bottom over and over again.
 
-import sys,time, urllib, traceback, random
+import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 
 from PIL import Image
 from numpy import array,dstack,full
 
 class image_repeater():
     def __init__(self, width, img_url):
-        urllib.urlretrieve(img_url, "file.jpg")
+        urllib.request.urlretrieve(img_url, "file.jpg")
         img = Image.open("file.jpg")
         self.img = img.resize((width,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
         img_tmp = array(self.img)

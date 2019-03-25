@@ -2,7 +2,7 @@
 # This code is based upon the low level python wrapper for rpi_ws281x library
 # which was produced by Tony DiCola (tony@tonydicory0x000080,a.com), Jeremy Garff (jer@jers.net)
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
-import sys,time, urllib, traceback, random
+import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 from PIL import Image
 from numpy import array, bitwise_xor, greater, dstack, full, uint8, maximum
 from neopixel import *
@@ -59,7 +59,7 @@ class LED_Control():
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
-            print(self.datastore.strips)
+            print((self.datastore.strips))
             print(err)
             traceback.print_exc(file=sys.stdout)
 
