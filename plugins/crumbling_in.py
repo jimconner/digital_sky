@@ -5,9 +5,9 @@
 import sys, traceback, random
 from numpy import array,full
 
-class crumbling_in():
-    def __init__(self,max_led):
-        self.max_led = max_led
+class animation():
+    def __init__(self,datastore):
+        self.max_led = datastore.LED_COUNT
         self.pos = 0
         self.direction=0
         self.cols = [ \

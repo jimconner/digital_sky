@@ -9,9 +9,6 @@ from neopixel import *
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
-# LED_COUNT    = <whevs> # This value is now passed in as a parameter when LED_Control is instanciated.
-LAMP_LENGTH    = 30      # Number of LEDs per lamp fixture.
-STRIP_LEDS     = 3       # The number of LEDs per lamp fixture which are actually driving entire strips instead of RGB
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
@@ -21,20 +18,19 @@ LED_CHANNEL    = 0
 LED_STRIP      = ws.SK6812W_STRIP
 
 class LED_Control():
-    def __init__(self, datastore, LED_COUNT):
+    def __init__(self, datastore):
         self.datastore = datastore
-        self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+        self.strip = Adafruit_NeoPixel(self.datastore.LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         self.strip.begin()
-        self.LED_COUNT=LED_COUNT
 
 
     def service_leds(self):
         try:
-            self.datastore.strips=full((self.LED_COUNT,4),0)
+            self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
             for animation in self.datastore.strip_animations:
             	self.datastore.strips=bitwise_xor(self.datastore.strips, animation.emit_row())
             # Set up an empty blank row of RGBW pixels
-            rowdata=full((self.LED_COUNT,4),0)
+            rowdata=full((self.datastore.LED_COUNT,4),0)
             # XOR on each pixel source effect in turn.
             for animation in self.datastore.animations:
                 rowdata=maximum(rowdata, animation.emit_row())
@@ -43,7 +39,7 @@ class LED_Control():
                 rowdata=filt(rowdata)
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
-                if i % LAMP_LENGTH < STRIP_LEDS:
+                if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:
                         ib=int(self.datastore.strips[i][0])
                         ww=int(self.datastore.strips[i][1])
                         nw=int(self.datastore.strips[i][2])

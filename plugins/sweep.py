@@ -4,10 +4,10 @@
 import sys, traceback, random
 from numpy import array,full
 
-class sweep():
-    def __init__(self,max_led):
+class animation():
+    def __init__(self,datastore):
         self.sweep_pos=0
-        self.max_led=max_led
+        self.max_led=datastore.LED_COUNT
 
     def emit_row(self):
         try:

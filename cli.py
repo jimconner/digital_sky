@@ -92,4 +92,30 @@ class CLICommandProtocol(basic.LineReceiver):
         """Set level if Daylight White strips (0-255)"""
         self.datastore.strips[int(pos)][3] = uint8(val)
 
+    def do_plugins(self):
+    	  """List the available plugins"""
+    	  for plugin in self.datastore.plugins:
+    	  	self.sendLine(str(plugin.__name__).encode()[8:])
 
+    def do_animations(self):
+    	  """List running animations"""
+    	  for animation in self.datastore.animations:
+    	  	self.sendLine(str(animation.__module__[8:]).encode())
+
+    def do_add(self, pluginname):
+    	  """ Add an instance of a plugin to the running animations list"""
+    	  for plugin in self.datastore.plugins:
+    	  	  print(plugin.__name__[8:], pluginname)
+    	  	  if plugin.__name__[8:] == pluginname:
+    	  	  	  self.datastore.animations.append(plugin.animation(self.datastore))
+
+    def do_del(self, pluginname):
+    	  """ Add an instance of a plugin to the running animations list"""
+    	  for animation in self.datastore.animations:
+    	  	  if animation.__module__[8:] == pluginname:
+    	  	  	  self.datastore.animations.remove(animation)
+
+
+    def do_exec(self, command):
+    	  """Dangerous debugging backdoor to execute any python code entered"""
+    	  exec(command)

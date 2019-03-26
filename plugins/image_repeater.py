@@ -7,11 +7,11 @@ import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 from PIL import Image
 from numpy import array,dstack,full
 
-class image_repeater():
-    def __init__(self, width, img_url):
+class animation():
+    def __init__(self, datastore, img_url):
         urllib.request.urlretrieve(img_url, "file.jpg")
         img = Image.open("file.jpg")
-        self.img = img.resize((width,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
+        self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
         img_tmp = array(self.img)
         b_tmp=full((img_tmp.shape[0],img_tmp.shape[1],1),0) # An extra 2D array of single bytes to store 6812B WW pixel data
         self.arr=dstack((img_tmp,b_tmp)) # Stack the extra bytes onto the 24bpp array to get 32bpp

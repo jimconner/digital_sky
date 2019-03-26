@@ -4,9 +4,9 @@
 import sys, traceback, random
 from numpy import array,full
 
-class inverse_strip_sweep():
-    def __init__(self,max_led):
-        self.max_led=max_led
+class strip_animation():
+    def __init__(self,datastore):
+        self.max_led=datastore.LED_COUNT
         self.sweep_pos=0
         self.colpos=0
         self.nextpos=0
