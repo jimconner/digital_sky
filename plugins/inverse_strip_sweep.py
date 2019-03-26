@@ -26,13 +26,13 @@ class strip_animation():
             curbg=240-((240*self.changestrip)>>8)
             if self.changestrip > 0:
                 newbg=(240*self.changestrip)>>8
-                row_arr[int(((self.sweep_pos/30)-3)*30 % self.max_led)][self.nextpos]=newbg
-                row_arr[int(((self.sweep_pos/30)-2)*30 % self.max_led)][self.nextpos]=newbg
-                row_arr[int(((self.sweep_pos/30)-1)*30 % self.max_led)][self.nextpos]=(brt*self.changestrip)>>8
+                row_arr[(((int(self.sweep_pos/30)-3)*30)) % self.max_led][self.nextpos]=newbg
+                row_arr[(((int(self.sweep_pos/30)-2)*30)) % self.max_led][self.nextpos]=newbg
+                row_arr[(((int(self.sweep_pos/30)-1)*30)) % self.max_led][self.nextpos]=(brt*self.changestrip)>>8
                 row_arr[int(self.sweep_pos/30)*30][self.colpos]=0
-                row_arr[int(((self.sweep_pos/30)+1)*30 % self.max_led)][self.nextpos]=newbg-((brt*self.changestrip)>>8)
-                row_arr[int(((self.sweep_pos/30)+2)*30 % self.max_led)][self.nextpos]=newbg
-                row_arr[int(((self.sweep_pos/30)+3)*30 % self.max_led)][self.nextpos]=newbg
+                row_arr[(((int(self.sweep_pos/30)+1)*30)) % self.max_led][self.nextpos]=newbg-((brt*self.changestrip)>>8)
+                row_arr[(((int(self.sweep_pos/30)+2)*30)) % self.max_led][self.nextpos]=newbg
+                row_arr[(((int(self.sweep_pos/30)+3)*30)) % self.max_led][self.nextpos]=newbg
                 #print("str",self.changestrip,"btr",brt,"nbg",newbg,"nlo",(brt*self.changestrip)>>8,"nhi",newbg-((brt*self.changestrip)>>8),"cbg",curbg,"clo",brt-((brt*self.changestrip)>>8),"chi",curbg-(brt-((brt*self.changestrip)>>8)))
 
                 if self.changestrip < 256:
@@ -41,15 +41,14 @@ class strip_animation():
                     self.changestrip = 0
                     curbg=240-((240*self.changestrip)>>8)
                     self.colpos = self.nextpos
-            row_arr[int(((self.sweep_pos/30)-3)*30 % self.max_led)][self.colpos]=curbg
-            row_arr[int(((self.sweep_pos/30)-2)*30 % self.max_led)][self.colpos]=curbg
-            row_arr[int(((self.sweep_pos/30)-1)*30 % self.max_led)][self.colpos]=brt-((brt*self.changestrip)>>8)
+            row_arr[(((int(self.sweep_pos/30)-3)*30)) % self.max_led][self.colpos]=curbg
+            row_arr[(((int(self.sweep_pos/30)-2)*30)) % self.max_led][self.colpos]=curbg
+            row_arr[(((int(self.sweep_pos/30)-1)*30)) % self.max_led][self.colpos]=brt-((brt*self.changestrip)>>8)
             row_arr[int(self.sweep_pos/30)*30][self.colpos]=0
-            row_arr[int(((self.sweep_pos/30)+1)*30 % self.max_led)][self.colpos]=curbg-(brt-((brt*self.changestrip)>>8))
-            row_arr[int(((self.sweep_pos/30)+2)*30 % self.max_led)][self.colpos]=curbg
-            row_arr[int(((self.sweep_pos/30)+3)*30 % self.max_led)][self.colpos]=curbg
+            row_arr[(((int(self.sweep_pos/30)+1)*30)) % self.max_led][self.colpos]=curbg-(brt-((brt*self.changestrip)>>8))
+            row_arr[(((int(self.sweep_pos/30)+2)*30)) % self.max_led][self.colpos]=curbg
+            row_arr[(((int(self.sweep_pos/30)+3)*30)) % self.max_led][self.colpos]=curbg
             return row_arr
         except Exception as err:
             print(err)
             traceback.print_exc(file=sys.stdout)
-
