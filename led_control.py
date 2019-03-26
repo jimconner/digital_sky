@@ -28,7 +28,7 @@ class LED_Control():
         try:
             self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
             for animation in self.datastore.strip_animations:
-            	self.datastore.strips=bitwise_xor(self.datastore.strips, animation.emit_row())
+            	self.datastore.strips=maximum(self.datastore.strips, animation.emit_row())
             # Set up an empty blank row of RGBW pixels
             rowdata=full((self.datastore.LED_COUNT,4),0)
             # XOR on each pixel source effect in turn.
