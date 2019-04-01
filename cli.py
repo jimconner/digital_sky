@@ -108,28 +108,11 @@ class CLICommandProtocol(basic.LineReceiver):
 
     def do_add(self, pluginname, extra=None):
           """ Add an instance of a plugin to the running animations list"""
-          for plugin in self.datastore.plugins:
-              if plugin.__name__[8:] == pluginname:
-                  if 'animation' in dir(plugin):
-                      if extra == None:
-                          self.datastore.animations.append(plugin.animation(self.datastore))
-                      else:
-                          self.datastore.animations.append(plugin.animation(self.datastore, extra))
-                  elif 'strip_animation' in dir(plugin):
-                      if extra == None:
-                          self.datastore.strip_animations.append(plugin.strip_animation(self.datastore))
-                      else:
-                          self.datastore.strip_animations.append(plugin.strip_animation(self.datastore, extra))
+          self.datastore.add_animation(pluginname, extra)
                   	
     def do_del(self, pluginname):
           """ Add an instance of a plugin to the running animations list"""
-          for animation in self.datastore.animations:
-              if animation.__module__[8:] == pluginname:
-                  self.datastore.animations.remove(animation)
-          for strip_animation in self.datastore.strip_animations:
-              if strip_animation.__module__[8:] == pluginname:
-                  self.datastore.strip_animations.remove(strip_animation)
-
+          self.datastore.del_animation(pluginname)
 
     def do_exec(self, command):
           """Dangerous debugging backdoor to execute any python code entered"""

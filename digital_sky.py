@@ -40,7 +40,30 @@ class Datastore_Data(Resource):
         self.animations=[]
         self.strip_animations=[]
         self.filters=[]
-
+        
+    def add_animation(self, pluginname, extra=None):
+          """ Add an instance of a plugin to the running animations list"""
+          for plugin in self.plugins:
+              if plugin.__name__[8:] == pluginname:
+                  if 'animation' in dir(plugin):
+                      if extra == None:
+                          self.animations.append(plugin.animation(self))
+                      else:
+                          self.animations.append(plugin.animation(self, extra))
+                  elif 'strip_animation' in dir(plugin):
+                      if extra == None:
+                          self.strip_animations.append(plugin.strip_animation(self))
+                      else:
+                          self.strip_animations.append(plugin.strip_animation(self, extra))
+                  	
+    def del_animation(self, pluginname):
+          """ Add an instance of a plugin to the running animations list"""
+          for animation in self.animations:
+              if animation.__module__[8:] == pluginname:
+                  self.animations.remove(animation)
+          for strip_animation in self.strip_animations:
+              if strip_animation.__module__[8:] == pluginname:
+                  self.strip_animations.remove(strip_animation)
 # -----------------
 # Utility Functions
 # -----------------
@@ -92,7 +115,7 @@ if __name__ == "__main__":
     lights=LED_Control(datastore)
     stdio.StandardIO(CLICommandProtocol(datastore))
     LEDTask = LoopingCall(lights.service_leds)
-    LEDTask.start(0.01)
+    LEDTask.start(0.02)
     log = Logger()
     startLogging()
     setLogLevel(namespace='mqtt',     levelStr='debug')

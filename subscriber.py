@@ -77,6 +77,8 @@ class MQTTService(ClientService):
         return dlist
 
 
+
+
     def onPublish(self, topic, payload, qos, dup, retain, msgId):
         '''
         Callback Receiving messages from publisher
@@ -102,6 +104,12 @@ class MQTTService(ClientService):
         if topic == 'hermes/intent/jimconner:lights_off':
             self.log.info("Lights Off")
             self.datastore.strip_vals=[0,0,0,0]
+        if topic == 'hermes/intent/jimconner:add':
+            self.log.info("Add a thing")
+            self.datastore.add_animation(payload['slots'][0]['value']['value'])
+        if topic == 'hermes/intent/jimconner:delete':
+            self.log.info("Delete a thing")
+            self.datastore.del_animation(payload['slots'][0]['value']['value'])
 
 
     def onDisconnection(self, reason):
