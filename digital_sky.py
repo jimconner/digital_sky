@@ -31,8 +31,8 @@ from twisted.logger   import (
 
 class Datastore_Data(Resource):
     def __init__(self):
-        self.LED_COUNT=210  # Total number of addressable pixels (including those which have strips attached)
-        self.LAMP_LENGTH=30 # The length of each lamp module
+        self.LED_COUNT=469  # Total number of addressable pixels (including those which have strips attached)
+        self.LAMP_LENGTH=67 # The length of each lamp module
         self.STRIP_LEDS=3   # The number of pixels at the start of each lamp which are special
         self.strip_vals = [0,0,0,0]
         self.strips = full((self.LED_COUNT,4),0, dtype=uint8)

@@ -9,25 +9,20 @@ class strip_animation():
         self.sweep_pos=0
         self.colpos=0
         self.max_led=datastore.LED_COUNT
+        self.lamp_length=datastore.LAMP_LENGTH
+        self.brightness_scaling=255/self.lamp_length
 
     def emit_row(self):
         try:
             if self.sweep_pos == 0:
                 self.colpos=(self.colpos+1) %4 
-            #if random.randint(0,10) >= 9:
-            #    if random.randint(0,4) == 1:
-            #        self.sweep_pos = (self.sweep_pos -1) % (self.max_led-1)
-            #    else:
-            #        self.sweep_pos = (self.sweep_pos +1) % (self.max_led-1)
             self.sweep_pos = (self.sweep_pos +1) % (self.max_led-1)
 
             row_arr=full((self.max_led,4),0)
-            brt=(self.sweep_pos % 30)*8
-            brtlo=240-(self.sweep_pos % 30)*8 
-            brthi=(self.sweep_pos % 30) *8
-            row_arr[(((int(self.sweep_pos/30)-1)*30)) % self.max_led][self.colpos]=brtlo
-            row_arr[int(self.sweep_pos/30)*30][self.colpos]=240
-            row_arr[(((int(self.sweep_pos/30)+1)*30)) % self.max_led][self.colpos]=brthi
+            brt=int((self.sweep_pos % self.lamp_length)*self.brightness_scaling)
+            row_arr[(((int(self.sweep_pos/self.lamp_length)-1)*self.lamp_length)) % self.max_led][self.colpos]=255-brt
+            row_arr[int(self.sweep_pos/self.lamp_length)*self.lamp_length][self.colpos]=255
+            row_arr[(((int(self.sweep_pos/self.lamp_length)+1)*self.lamp_length)) % self.max_led][self.colpos]=brt
             return row_arr
         except Exception as err:
             print(err)
