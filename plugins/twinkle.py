@@ -7,8 +7,10 @@ import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 from PIL import Image
 from numpy import array,dstack,full
 
+# Requires an image_url and a 0-3 value to select R,G,B or W respectively.
 class animation():
-    def __init__(self, datastore, img_url):
+    def __init__(self, datastore, img_url, strip):
+        self.strip=int(strip)
         urllib.request.urlretrieve(img_url, "file.jpg")
         img = Image.open("file.jpg")
         self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
@@ -16,7 +18,7 @@ class animation():
         self.arr=full((img_tmp.shape[0],img_tmp.shape[1],4),0) # An extra 2D array of single bytes to store 6812B WW pixel data
         for row in range(len(img_tmp)):
             for pixel in range(len(img_tmp[row])):
-                self.arr[row][pixel][3]=min(img_tmp[row][pixel][0],img_tmp[row][pixel][1],img_tmp[row][pixel][2])
+                self.arr[row][pixel][self.strip]=min(img_tmp[row][pixel][0],img_tmp[row][pixel][1],img_tmp[row][pixel][2])
         self.row = 0
         self.cycle = 2 # self.cycle used as divisor to make image play more slowly.
         self.count = 0

@@ -106,9 +106,9 @@ class CLICommandProtocol(basic.LineReceiver):
           for animation in self.datastore.strip_animations:
               self.sendLine(str(animation.__module__[8:]).encode())
 
-    def do_add(self, pluginname, extra=None):
+    def do_add(self, pluginname, extra=None, extra2=None):
           """ Add an instance of a plugin to the running animations list"""
-          self.datastore.add_animation(pluginname, extra)
+          self.datastore.add_animation(pluginname, extra, extra2)
                   	
     def do_del(self, pluginname):
           """ Add an instance of a plugin to the running animations list"""
