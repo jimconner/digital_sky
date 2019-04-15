@@ -15,23 +15,29 @@ The goal of the Digital Sky project is to have one set of lights which can do it
 
 A set of YouTube videos describe the project hardware in detail.
 
-Part 0: https://www.youtube.com/watch?v=tIFp80Za02Q
+[Part 0](https://www.youtube.com/watch?v=tIFp80Za02Q)
 
-Part 1: https://www.youtube.com/watch?v=aaL2gH_QrJY
+[Part 1](https://www.youtube.com/watch?v=aaL2gH_QrJY)
 
-Part 2: https://www.youtube.com/watch?v=8ieTPU6f_Ws
+[Part 2](https://www.youtube.com/watch?v=8ieTPU6f_Ws)
 
-Part 3: https://www.youtube.com/watch?v=-cvN6kNjJMA
+[Part 3](https://www.youtube.com/watch?v=-cvN6kNjJMA)
 
 Part 4: The video that will describe how this software all works :-)
 
 This repository contains the software component to run the Digital Sky lamps.
 
-## The Software
-The Digital Sky control software uses jgarff's rpi_ws281x library ( https://github.com/jgarff/rpi_ws281x ) for the low level strip control.
-This software is built on the Twisted Matrix Python Asychronous Event-Driven Framework ( https://twistedmatrix.com/trac/ )
+## The Hardware
+The Digital Sky hardware consists of strips of WS2812 individually addressable RGBW LED Pixels used in conjunction with WS2811 PWM LED driver ICs which are used to feed dedicated Warm-White, Natural-White, Daylight-White and Ice-Blue (SAD LAMP) strips of high efficiency, high-CRI LEDs. 
 
-The controller software works in a way that is similar music production software (Ableton, garageband, cuebase etc).
+The strips are broken out into lamp modules which each contain 64 LED pixels combined with four WW/NW/DW/IB strips for high intensity lighting. The lamp modules measure 500mm x 55mm each, comsuming over 60W of power when all LEDs are lit, and offering somewhere around 4000 lumens of light output. 
+
+The combination of high efficiency white strips with RGBW addressable pixels allows for a good combination of high intensity lighting during working hours and relaxed hypnotic lighting effects in the evenings (or for parties)
+
+
+## The Software
+The controller software works in a way that is similar music production software (Ableton, Cuebase, Garageband etc), mixing together multiple animation channels and layering filters and effects on top. Lighting animations may be thought of as being similar to music samples. Samples may be looped, faded in & out or mixed together. Lighting animations can be treated the same way. We process our lighting animations 100 times per second.
+
 All 'animation' plugins are required to have an emit_row() function, which when called will emit the pixel values for an entire strip of RGBW pixels.
 Each time the emit_row() function is called, they must emit the next row in their sequence.
 Multiple animations may be running at the same time.
@@ -47,6 +53,8 @@ This link probably won't work for you because I haven't published the agent yet,
 
 https://console.snips.ai/assistant/proj_VXNK6aedOw4/app/skill_o6OlPAP64KP/edit 
 
+The Digital Sky control software uses jgarff's rpi_ws281x library ( https://github.com/jgarff/rpi_ws281x ) for the low level strip control.
+This software is built on the Twisted Matrix Python Asychronous Event-Driven Framework ( https://twistedmatrix.com/trac/ )
 
 
 ## Contributing
