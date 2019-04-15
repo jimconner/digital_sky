@@ -13,11 +13,10 @@ class animation():
         img = Image.open("file.jpg")
         self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
         img_tmp = array(self.img)
-        b_tmp=full((img_tmp.shape[0],img_tmp.shape[1],1),0) # An extra 2D array of single bytes to store 6812B WW pixel data
-        self.arr=dstack((img_tmp,b_tmp)) # Stack the extra bytes onto the 24bpp array to get 32bpp
-        for row in range(len(self.arr)):
-            for pixel in range(len(self.arr[row])):
-                self.arr[row][pixel][3]=min([self.arr[row][pixel][0],self.arr[row][pixel][1],self.arr[row][pixel][2]])
+        self.arr=full((img_tmp.shape[0],img_tmp.shape[1],4),0) # An extra 2D array of single bytes to store 6812B WW pixel data
+        for row in range(len(img_tmp)):
+            for pixel in range(len(img_tmp[row])):
+                self.arr[row][pixel][3]=min(img_tmp[row][pixel][0],img_tmp[row][pixel][1],img_tmp[row][pixel][2])
         self.row = 0
         self.cycle = 2 # self.cycle used as divisor to make image play more slowly.
         self.count = 0
