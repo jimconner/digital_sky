@@ -23,6 +23,7 @@ from led_control import LED_Control
 from twisted.logger   import (
     Logger, LogLevel, globalLogBeginner, textFileLogObserver, 
     FilteringLogObserver, LogLevelFilterPredicate)
+from settings import *
 
 #if len(sys.argv) != 2 : 
 #    print(("Usage: "+sys.argv[0]+" <url_for_jpg_file>"))
@@ -31,9 +32,9 @@ from twisted.logger   import (
 
 class Datastore_Data(Resource):
     def __init__(self):
-        self.LED_COUNT=469  # Total number of addressable pixels (including those which have strips attached)
-        self.LAMP_LENGTH=67 # The length of each lamp module
-        self.STRIP_LEDS=3   # The number of pixels at the start of each lamp which are special
+        self.LED_COUNT=LED_COUNT  # Total number of addressable pixels (including those which have strips attached)
+        self.LAMP_LENGTH=LAMP_LENGTH # The length of each lamp module
+        self.STRIP_LEDS=STRIP_LEDS   # The number of pixels at the start of each lamp which are special
         self.strip_vals = [0,0,0,0]
         self.strips = full((self.LED_COUNT,4),0, dtype=uint8)
         self.plugins = []
