@@ -32,6 +32,9 @@ The Digital Sky hardware consists of strips of WS2812 individually addressable R
 
 The strips are broken out into lamp modules which each contain 64 LED pixels combined with four WW/NW/DW/IB strips for high intensity lighting. The lamp modules measure 500mm x 55mm each, comsuming over 60W of power when all LEDs are lit, and offering somewhere around 4000 lumens of light output. 
 
+![Digital Sky Lamp Module](images/LampModule.jpg "Digital Sky Lamp Module")
+
+
 The combination of high efficiency white strips with RGBW addressable pixels allows for a good combination of high intensity lighting during working hours and relaxed hypnotic lighting effects in the evenings (or for parties)
 
 
