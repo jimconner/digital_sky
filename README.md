@@ -15,15 +15,15 @@ The goal of the Digital Sky project is to have one set of lights which can do it
 
 A set of YouTube videos describe the project hardware in detail.
 
-[Part 0](https://www.youtube.com/watch?v=tIFp80Za02Q)
+[<img src="images/part0.jpg">](https://www.youtube.com/watch?v=tIFp80Za02Q)
 
-[Part 1](https://www.youtube.com/watch?v=aaL2gH_QrJY)
+[<img src="images/part1.jpg">](https://www.youtube.com/watch?v=aaL2gH_QrJY)
 
-[Part 2](https://www.youtube.com/watch?v=8ieTPU6f_Ws)
+[<img src="images/part2.jpg">](https://www.youtube.com/watch?v=8ieTPU6f_Ws)
 
-[Part 3](https://www.youtube.com/watch?v=-cvN6kNjJMA)
+[<img src="images/part3.jpg">](https://www.youtube.com/watch?v=-cvN6kNjJMA)
 
-Part 4: The video that will describe how this software all works :-)
+[<img src="images/part4.jpg">](https://www.youtube.com/watch?v=-cvN6kNjJMA)
 
 This repository contains the software component to run the Digital Sky lamps.
 
