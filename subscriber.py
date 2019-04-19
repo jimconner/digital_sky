@@ -89,18 +89,18 @@ class MQTTService(ClientService):
         except:
             print("*** Explodey Death thing when processing message from mqtt ***")
             print(payload)
-        if topic == 'hermes/intent/jimconner:warm':
-            self.log.info("Warm White")
-            self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
-        if topic == 'hermes/intent/jimconner:daylight':
-            self.log.info("Daylight White")
-            self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:natural':
             print("Natural White")
-            self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
+            self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:daylight':
+            self.log.info("Daylight White")
+            self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:blue':
             self.log.info("Ice Blue")
-            self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
+            self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
+        if topic == 'hermes/intent/jimconner:warm':
+            self.log.info("Warm White")
+            self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
         if topic == 'hermes/intent/jimconner:lights_off':
             self.log.info("Lights Off")
             self.datastore.strip_vals=[0,0,0,0]
