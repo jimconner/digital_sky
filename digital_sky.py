@@ -90,17 +90,6 @@ def setLogLevel(namespace=None, levelStr='info'):
     level = LogLevel.levelWithName(levelStr)
     logLevelFilterPredicate.setLogLevelForNamespace(namespace=namespace, level=level)
 
-# ----------------
-# Global variables
-# ----------------
-
-# Global object to control globally namespace logging
-logLevelFilterPredicate = LogLevelFilterPredicate(defaultLogLevel=LogLevel.info)
-# LED strip configuration:
-# MQTT Service to subscribe to
-BROKER = "tcp:localhost:1883"
-
-
 
 if __name__ == "__main__":
     datastore=Datastore_Data()
