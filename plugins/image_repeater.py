@@ -8,7 +8,7 @@ from PIL import Image
 from numpy import array,dstack,full
 
 class animation():
-    def __init__(self, datastore, img_url):
+    def __init__(self, datastore, img_url, whevs=None):
         urllib.request.urlretrieve(img_url, "file.jpg")
         img = Image.open("file.jpg")
         self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
