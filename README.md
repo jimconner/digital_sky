@@ -30,7 +30,7 @@ This repository contains the software component to run the Digital Sky lamps.
 ## The Hardware
 The Digital Sky hardware consists of strips of WS2812 individually addressable RGBW LED Pixels used in conjunction with WS2811 PWM LED driver ICs which are used to feed dedicated Warm-White, Natural-White, Daylight-White and Ice-Blue (SAD LAMP) strips of high efficiency, high-CRI LEDs. 
 
-The strips are broken out into lamp modules which each contain 64 LED pixels combined with four WW/NW/DW/IB strips for high intensity lighting. The lamp modules measure 500mm x 55mm each, comsuming over 60W of power when all LEDs are lit, and offering somewhere around 4000 lumens of light output. 
+The strips are broken out into lamp modules which each contain 64 individually addressable LED pixels combined with four WW/NW/DW/IB strips for high intensity lighting. The lamp modules measure 500mm x 55mm each, comsuming over 60W of power when all LEDs are lit, and offering somewhere around 4000 lumens of light output. 
 
 ![Digital Sky Lamp Module](images/LampModule.jpg "Digital Sky Lamp Module")
 
