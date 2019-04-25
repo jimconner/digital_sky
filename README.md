@@ -59,6 +59,18 @@ https://console.snips.ai/assistant/proj_VXNK6aedOw4/app/skill_o6OlPAP64KP/edit
 The Digital Sky control software uses jgarff's rpi_ws281x library ( https://github.com/jgarff/rpi_ws281x ) for the low level strip control.
 This software is built on the Twisted Matrix Python Asychronous Event-Driven Framework ( https://twistedmatrix.com/trac/ )
 
+## Usage
+
+Root privileges are required for access to GPIO line, so running as a daemon is highly recommended.
+There is a sample init.d script in the extras/ folder. Copy it to /etc/init.d and rename it to something nicer. Update file paths to suit your locations.
+Generate a set of ssh keys using ssh-keygen and save them in the ssh-keys folder. The filenames of these keys should be stored in settings.py
+Take your own personal ssh public key, and save that into the ssh-keys folder as client_rsa.pub (or a different name as long as you update settings.py)
+
+Start software up with /etc/init.d/digital_sky start
+Use the update-rc.d command to configure auto-start at boot time.
+
+Once the daemon is started, ssh into port 5022 on your pi.
+Type 'help' for more
 
 ## Contributing
 
