@@ -62,6 +62,27 @@ class Datastore_Data(Resource):
           for strip_animation in self.strip_animations:
               if strip_animation.__module__[8:] == pluginname:
                   self.strip_animations.remove(strip_animation)
+                  
+class SSHCLIFactory(factory.SSHFactory):
+    protocol = SSHServerTransport
+    publicKeys = {
+        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PUBLIC)
+    }
+    privateKeys = {
+        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PRIVATE)
+    }
+    # Service handlers.
+    services = {
+        b'ssh-userauth': userauth.SSHUserAuthServer,
+        b'ssh-connection': connection.SSHConnection
+    }
+
+    def getPrimes(self):
+        """
+        See: L{factory.SSHFactory}
+        """
+        return PRIMES                  
+
 # -----------------
 # Utility Functions
 # -----------------
@@ -91,29 +112,6 @@ def setLogLevel(namespace=None, levelStr='info'):
     level = LogLevel.levelWithName(levelStr)
     logLevelFilterPredicate.setLogLevelForNamespace(namespace=namespace, level=level)
 
-
-
-    
-
-class SSHCLIFactory(factory.SSHFactory):
-    protocol = SSHServerTransport
-    publicKeys = {
-        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PUBLIC)
-    }
-    privateKeys = {
-        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PRIVATE)
-    }
-    # Service handlers.
-    services = {
-        b'ssh-userauth': userauth.SSHUserAuthServer,
-        b'ssh-connection': connection.SSHConnection
-    }
-
-    def getPrimes(self):
-        """
-        See: L{factory.SSHFactory}
-        """
-        return PRIMES
 
 if __name__ == "__main__":
     datastore=Datastore_Data()
