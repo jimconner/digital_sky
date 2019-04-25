@@ -25,7 +25,7 @@ from twisted.logger   import (
     Logger, LogLevel, globalLogBeginner, textFileLogObserver, 
     FilteringLogObserver, LogLevelFilterPredicate)
 from settings import *
-from sshsimpleserver import *
+from ssh import *
 
 class Datastore_Data(Resource):
     def __init__(self):
