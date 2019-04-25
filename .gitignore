@@ -3,3 +3,4 @@
 *.bak
 nohup.out
 file.jpg
+ssh-keys/
