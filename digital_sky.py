@@ -19,7 +19,6 @@ from twisted.protocols import basic
 from twisted.python import components
 from twisted.web import client
 from twisted.web.resource import Resource
-from cli import CLICommandProtocol
 from led_control import LED_Control
 from twisted.logger   import (
     Logger, LogLevel, globalLogBeginner, textFileLogObserver, 
@@ -140,7 +139,6 @@ if __name__ == "__main__":
         datastore.plugins.append(importlib.import_module('plugins.'+filename[:-3]))
     del filename
     lights=LED_Control(datastore)
-    stdio.StandardIO(CLICommandProtocol(datastore))
     LEDTask = LoopingCall(lights.service_leds)
     LEDTask.start(0.02)
     log = Logger()
