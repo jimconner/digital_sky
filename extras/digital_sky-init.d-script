@@ -1,0 +1,60 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          lockcontroller
+# Required-Start:    $network $syslog
+# Required-Stop:     $network $syslog
+# X-Start-Before:    $x-display-manager gdm kdm xdm wdm ldm sdm nodm
+# X-Interactive:     false
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Digital Sky LED Controller
+### END INIT INFO
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/home/pi/development/digital_sky/digital_sky.py
+NAME=digital_sky
+APPDIR=/home/pi/development/digital_sky
+DESC="Digital Sky LED Controller"
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+        echo -n "Starting $DESC: "
+        start-stop-daemon --start --quiet --background --make-pidfile --pidfile /var/run/$NAME.pid \
+                --chdir $APPDIR --exec $DAEMON  
+        echo "$NAME."
+        ;;
+  stop)
+        echo -n "Stopping $DESC: "
+        start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid
+        # \     --exec $DAEMON
+        echo "$NAME."
+        ;;
+  restart)
+        #
+        #       If the "reload" option is implemented, move the "force-reload"
+        #       option to the "reload" entry above. If not, "force-reload" is
+        #       just the same as "restart".
+        #
+        echo -n "Restarting $DESC: "
+        start-stop-daemon --stop --quiet --pidfile \
+                /var/run/$NAME.pid
+                # --exec $DAEMON
+        sleep 2
+        start-stop-daemon --start --quiet --background --make-pidfile --pidfile /var/run/$NAME.pid \
+                --chdir $APPDIR --exec $DAEMON  
+        echo "$NAME."
+        ;;
+  *)
+        N=/etc/init.d/$NAME
+        echo "Usage: $N {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0
