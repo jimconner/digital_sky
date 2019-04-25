@@ -104,6 +104,9 @@ class MQTTService(ClientService):
         if topic == 'hermes/intent/jimconner:lights_off':
             self.log.info("Lights Off")
             self.datastore.strip_vals=[0,0,0,0]
+            self.datastore.animations=[]
+            self.datastore.strip_animations=[]
+            self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:add':
             self.log.info("Add a thing")
             self.datastore.add_animation(payload['slots'][0]['value']['value'])

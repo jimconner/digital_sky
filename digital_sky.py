@@ -76,12 +76,7 @@ class SSHCLIFactory(factory.SSHFactory):
         b'ssh-userauth': userauth.SSHUserAuthServer,
         b'ssh-connection': connection.SSHConnection
     }
-
-#    def getPrimes(self):
-#        """
-#        See: L{factory.SSHFactory}
-#        """
-#        return PRIMES                  
+           
 
 # -----------------
 # Utility Functions

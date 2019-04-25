@@ -148,6 +148,19 @@ class CLIProtocol(protocol.Protocol):
     def do_ww(self, val):
         """Set level if Warm White strips (0-255)"""
         self.datastore.strip_vals[3]=uint8(val)
+        
+    def do_lightsout(self):
+        """Stop all animations and turn all lights off"""
+        self.strip_vals = [0,0,0,0]
+        self.datastore.animations=[]
+        self.datastore.strip_animations=[]
+        self.datastore.add_animation("set_strips")
+        
+    def do_morning(self):
+        """Wake up mode"""
+        self.strip_vals = [50,0,0,0]
+        self.datastore.add_animation("rainbow")
+    
 
 
 
