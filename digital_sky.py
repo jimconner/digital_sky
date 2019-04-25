@@ -109,17 +109,11 @@ class SSHCLIFactory(factory.SSHFactory):
         b'ssh-connection': connection.SSHConnection
     }
 
-    def __init__(self, datastore):
-        self.datastore=datastore
-
     def getPrimes(self):
         """
         See: L{factory.SSHFactory}
         """
         return PRIMES
-
-
-
 
 if __name__ == "__main__":
     datastore=Datastore_Data()
@@ -149,5 +143,5 @@ if __name__ == "__main__":
     myEndpoint = clientFromString(reactor, BROKER)
     serv       = MQTTService(myEndpoint, factory, log, datastore)
     serv.startService()
-    reactor.listenTCP(5022, SSHCLIFactory(datastore))
+    reactor.listenTCP(5022, SSHCLIFactory())
     reactor.run()
