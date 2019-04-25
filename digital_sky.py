@@ -77,11 +77,11 @@ class SSHCLIFactory(factory.SSHFactory):
         b'ssh-connection': connection.SSHConnection
     }
 
-    def getPrimes(self):
-        """
-        See: L{factory.SSHFactory}
-        """
-        return PRIMES                  
+#    def getPrimes(self):
+#        """
+#        See: L{factory.SSHFactory}
+#        """
+#        return PRIMES                  
 
 # -----------------
 # Utility Functions
