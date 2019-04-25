@@ -4,7 +4,7 @@ Digital Sky is a LED lighting project.
 
 <Pretty animated GIF goes here>
 
-Indoor lighting is generally pretty sucky. If it wasn't there wouldn't be a booming market in SAD lamps to help keep the winter blues at bay. 
+Indoor lighting is generally pretty sucky. This is evidenced by the massive variety of different types of light sources for all sorts of different environments. Cold white flourescents are common in workshops and offices. Bright halogens are popular in kitchens and bathrooms. Warmer softer colours are good for living rooms and bedrooms. And of course, in Northern climates there's also a booming market in SAD lamps to keep the winter blues away.
 
 Outdoor lighting levels are not constant. Sometimes the sun will come out from behind a cloud and bathe you in glorious rays. Sometimes in the evenings the sky looks like it's on fire - all red and gold. When there's a storm brewing the world turns grey and purple.
 
