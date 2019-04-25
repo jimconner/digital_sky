@@ -13,6 +13,7 @@ from twisted.internet import reactor, protocol
 from twisted.python import log
 from zope.interface import implementer
 from twisted.conch import recvline
+from numpy import uint8
 import sys
 
 class ExampleAvatar(avatar.ConchUser):
@@ -131,6 +132,23 @@ class CLIProtocol(protocol.Protocol):
     def do_del(self, pluginname):
           """ Add an instance of a plugin to the running animations list"""
           self.datastore.del_animation(pluginname)
+
+    def do_nw(self, val):
+        """Set level if Natural White strips (0-255)"""
+        self.datastore.strip_vals[0]=uint8(val)
+
+    def do_dw(self, val):
+        """Set level if Daylight White strips (0-255)"""
+        self.datastore.strip_vals[1]=uint8(val)
+
+    def do_ib(self, val):
+        """Set level if Ice Blue strips (0-255)"""
+        self.datastore.strip_vals[2]=uint8(val)
+
+    def do_ww(self, val):
+        """Set level if Warm White strips (0-255)"""
+        self.datastore.strip_vals[3]=uint8(val)
+
 
 
 class ExampleSession(object):
