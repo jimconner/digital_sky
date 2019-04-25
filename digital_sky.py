@@ -16,6 +16,7 @@ from twisted.internet.task import LoopingCall
 from twisted.internet.defer       import inlineCallbacks, DeferredList
 from twisted.internet.endpoints   import clientFromString
 from twisted.protocols import basic
+from twisted.python import components
 from twisted.web import client
 from twisted.web.resource import Resource
 from cli import CLICommandProtocol
@@ -24,6 +25,7 @@ from twisted.logger   import (
     Logger, LogLevel, globalLogBeginner, textFileLogObserver, 
     FilteringLogObserver, LogLevelFilterPredicate)
 from settings import *
+from sshsimpleserver import *
 
 class Datastore_Data(Resource):
     def __init__(self):
@@ -91,8 +93,47 @@ def setLogLevel(namespace=None, levelStr='info'):
     logLevelFilterPredicate.setLogLevelForNamespace(namespace=namespace, level=level)
 
 
+
+    
+
+class SSHCLIFactory(factory.SSHFactory):
+    protocol = SSHServerTransport
+    publicKeys = {
+        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PUBLIC)
+    }
+    privateKeys = {
+        b'ssh-rsa': keys.Key.fromFile(SERVER_RSA_PRIVATE)
+    }
+    # Service handlers.
+    services = {
+        b'ssh-userauth': userauth.SSHUserAuthServer,
+        b'ssh-connection': connection.SSHConnection
+    }
+
+    def __init__(self, datastore):
+        self.datastore=datastore
+
+    def getPrimes(self):
+        """
+        See: L{factory.SSHFactory}
+        """
+        return PRIMES
+
+
+
+
 if __name__ == "__main__":
     datastore=Datastore_Data()
+    portal = portal.Portal(ExampleRealm(datastore))
+    passwdDB = InMemoryUsernamePasswordDatabaseDontUse()
+    #passwdDB.addUser(b'dumbuser', b'badpassword')
+    sshDB = SSHPublicKeyChecker(InMemorySSHKeyDB(
+        {b'jim': [keys.Key.fromFile(CLIENT_RSA_PUBLIC)]}))
+    portal.registerChecker(passwdDB)
+    portal.registerChecker(sshDB)
+    SSHCLIFactory.portal = portal
+    SSHCLIFactory.datastore = datastore
+    components.registerAdapter(ExampleSession, ExampleAvatar, session.ISession)
     for filename in os.listdir('plugins'):
         if filename == '__init__.py' or filename[-3:] != '.py':
             continue
@@ -110,5 +151,5 @@ if __name__ == "__main__":
     myEndpoint = clientFromString(reactor, BROKER)
     serv       = MQTTService(myEndpoint, factory, log, datastore)
     serv.startService()
+    reactor.listenTCP(5022, SSHCLIFactory(datastore))
     reactor.run()
-
