@@ -26,6 +26,7 @@ class LED_Control():
 
     def service_leds(self):
         try:
+            print(".", end="")
             self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
             for animation in self.datastore.strip_animations:
             	self.datastore.strips=maximum(self.datastore.strips, animation.emit_row())
@@ -35,8 +36,8 @@ class LED_Control():
             for animation in self.datastore.animations:
                 rowdata=maximum(rowdata, animation.emit_row())
             # Pass the resulting rowdata through each filter in turn
-            for filt in self.datastore.filters:
-                rowdata=filt(rowdata)
+            #for filt in self.datastore.filters:
+            #    rowdata=filt(rowdata)
             # Scale RGBW elements individually (colour tint)
             rowdata=rowdata*self.datastore.rgbw_brightness           
             # Then scale everything by master_brightness
@@ -45,18 +46,23 @@ class LED_Control():
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:
-                        ib=int(self.datastore.strips[i][0])
-                        ww=int(self.datastore.strips[i][1])
-                        nw=int(self.datastore.strips[i][2])
-                        dw=int(self.datastore.strips[i][3])
-                        self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
+                    #ib=int(self.datastore.strips[i][0])
+                    #ww=int(self.datastore.strips[i][1])
+                    #nw=int(self.datastore.strips[i][2])
+                    #dw=int(self.datastore.strips[i][3])
+                    #self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
+                    self.strip._led_data[i]=Color(int(self.datastore.strips[i][0]), \
+                                                  int(self.datastore.strips[i][1]), \
+                                                  int(self.datastore.strips[i][2]), \
+                                                  int(self.datastore.strips[i][3]))   
                 else:
-                    r=int(rowdata[i][0])
-                    g=int(rowdata[i][1])
-                    b=int(rowdata[i][2])
-                    w=int(rowdata[i][3])
+                    #r=int(rowdata[i][0])
+                    #g=int(rowdata[i][1])
+                    #b=int(rowdata[i][2])
+                    #w=int(rowdata[i][3])
                 # Set the LED color buffer value.
-                    self.strip.setPixelColor(i, Color(r,g,b,w))
+                    #self.strip.setPixelColor(i, Color(r,g,b,w))
+                    self.strip._led_data[i]=Color(int(rowdata[i][0]),int(rowdata[i][1]),int(rowdata[i][2]),int(rowdata[i][3]))
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
