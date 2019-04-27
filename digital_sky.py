@@ -131,7 +131,7 @@ if __name__ == "__main__":
             continue
         datastore.plugins.append(importlib.import_module('plugins.'+filename[:-3]))
     del filename
-    self.datastore.add_animation('set_strips') # Lazy hack to ensure set_strips is available - FIXME later.
+    datastore.add_animation('set_strips') # Lazy hack to ensure set_strips is available - FIXME later.
     lights=LED_Control(datastore)
     LEDTask = LoopingCall(lights.service_leds)
     LEDTask.start(0.02)

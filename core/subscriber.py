@@ -85,6 +85,9 @@ class MQTTService(ClientService):
         except:
             print("*** Explodey Death thing when processing message from mqtt ***")
             print(payload)
+        if topic == 'hermes/hotword/default/detected':
+            print("Snips is listening")
+            self.datastore.add_animation('pulse')
         if topic == 'hermes/intent/jimconner:natural':
             print("Natural White")
             self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
@@ -109,9 +112,25 @@ class MQTTService(ClientService):
         if topic == 'hermes/intent/jimconner:delete':
             self.log.info("Delete a thing")
             self.datastore.del_animation(payload['slots'][0]['value']['value'])
-        if topic == 'hermes/hotword/default/detected':
-            self.datastore.add_animation('pulse')
-            
+        if topic == 'hermes/intent/jimconner:brightness':
+            if len(payload['slots']) == 1:
+                self.datastore.master_brightness=float(payload['slots'][0]['value']['value']/100)
+            else:
+                print("Slots Length:", len(payload['slots']))
+                for slot in range(len(payload['slots'])):
+                    print(payload['slots'][slot])
+                if payload['slots'][0]['value']['value'] == 'red':
+                    self.datastore.rgbw_brightness[0]=float(payload['slots'][1]['value']['value']/100)
+                if payload['slots'][0]['value']['value'] == 'green':
+                    self.datastore.rgbw_brightness[1]=float(payload['slots'][1]['value']['value']/100)
+                if payload['slots'][0]['value']['value'] == 'blue':
+                    self.datastore.rgbw_brightness[2]=float(payload['slots'][1]['value']['value']/100)
+                if payload['slots'][0]['value']['value'] == 'white':
+                    self.datastore.rgbw_brightness[3]=float(payload['slots'][1]['value']['value']/100)
+                if payload['slots'][0]['value']['value'] == 'master':
+                    self.datastore.master_brightness=float(payload['slots'][0]['value']['value']/100)
+                print(self.datastore.rgbw_brightness)
+                        
 
 
     def onDisconnection(self, reason):
