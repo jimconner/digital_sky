@@ -30,5 +30,6 @@ CLIENT_RSA_PUBLIC = 'ssh-keys/client_rsa.pub'
 #STARTUP_SCRIPT="""
 #add set_strips
 #add twinkle https://images-na.ssl-images-amazon.com/images/I/41J%2BOq%2B2zAL._SX355_.jpg 3
+# add image_repeater https://blog.radissonblu.com/wp-content/uploads/2017/03/The_impact_of_colors_image_1.jpg
 #"""
 

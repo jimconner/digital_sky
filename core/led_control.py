@@ -4,7 +4,7 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 from PIL import Image
-from numpy import array, bitwise_xor, greater, dstack, full, uint8, maximum
+from numpy import array, bitwise_xor, clip, greater, dstack, full, uint8, maximum
 from neopixel import *
 from filters.make_it_red import make_it_red
 
@@ -37,6 +37,11 @@ class LED_Control():
             # Pass the resulting rowdata through each filter in turn
             for filt in self.datastore.filters:
                 rowdata=filt(rowdata)
+            # Scale RGBW elements individually (colour tint)
+            rowdata=rowdata*self.datastore.rgbw_brightness           
+            # Then scale everything by master_brightness
+            rowdata=rowdata*float(self.datastore.master_brightness)
+            rowdata=uint8(rowdata)
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:

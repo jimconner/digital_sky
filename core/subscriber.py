@@ -9,8 +9,6 @@ from twisted.application.internet import ClientService, backoffPolicy
 from mqtt.client.factory import MQTTFactory
 
 
-
-
 # -----------------------
 # MQTT Subscriber Service
 # ------------------------
@@ -77,8 +75,6 @@ class MQTTService(ClientService):
         return dlist
 
 
-
-
     def onPublish(self, topic, payload, qos, dup, retain, msgId):
         '''
         Callback Receiving messages from publisher
@@ -113,6 +109,9 @@ class MQTTService(ClientService):
         if topic == 'hermes/intent/jimconner:delete':
             self.log.info("Delete a thing")
             self.datastore.del_animation(payload['slots'][0]['value']['value'])
+        if topic == 'hermes/hotword/default/detected':
+            self.datastore.add_animation('pulse')
+            
 
 
     def onDisconnection(self, reason):

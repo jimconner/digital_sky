@@ -33,6 +33,8 @@ class Datastore_Data(Resource):
         self.STRIP_LEDS=STRIP_LEDS   # The number of pixels at the start of each lamp which are special
         #FUTURE# self.strip_vals = full(int((self.LED_COUNT/self.LAMP_LENGTH)*self.STRIP_LEDS),4),0, dtype=uint8)
         self.strip_vals = [0,0,0,0]
+        self.master_brightness = 1.0
+        self.rgbw_brightness = [1.0,1.0,1.0,1.0]
         self.strips = full((self.LED_COUNT,4),0, dtype=uint8)
         self.plugins = []
         self.animations=[]
@@ -62,6 +64,10 @@ class Datastore_Data(Resource):
           for strip_animation in self.strip_animations:
               if strip_animation.__module__[8:] == pluginname:
                   self.strip_animations.remove(strip_animation)
+                  
+    def del_by_class(self, plugin):
+        print("Removing: ", plugin)
+        self.strip_animations.remove(plugin)
                   
 class SSHCLIFactory(factory.SSHFactory):
     protocol = SSHServerTransport
@@ -125,6 +131,7 @@ if __name__ == "__main__":
             continue
         datastore.plugins.append(importlib.import_module('plugins.'+filename[:-3]))
     del filename
+    self.datastore.add_animation('set_strips') # Lazy hack to ensure set_strips is available - FIXME later.
     lights=LED_Control(datastore)
     LEDTask = LoopingCall(lights.service_leds)
     LEDTask.start(0.02)

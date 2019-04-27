@@ -156,13 +156,21 @@ class CLIProtocol(protocol.Protocol):
         self.datastore.strip_animations=[]
         self.datastore.add_animation("set_strips")
         
-    def do_morning(self):
-        """Wake up mode"""
-        self.strip_vals = [50,0,0,0]
-        self.datastore.add_animation("rainbow")
-    
-
-
+    def do_brt(self, val):
+        """Set the master brightness. Range: 0.00-1.00"""
+        self.datastore.master_brightness=float(val)
+    def do_brtr(self, val):
+        """Set the brightness for the Red channel. Range: 0.00-1.00"""
+        self.datastore.rgbw_brightness[0]=float(val)
+    def do_brtg(self, val):
+        """Set the brightness for the Green channel. Range: 0.00-1.00"""
+        self.datastore.rgbw_brightness[1]=float(val)
+    def do_brtb(self, val):
+        """Set the brightness for the Blue channel. Range: 0.00-1.00"""
+        self.datastore.rgbw_brightness[2]=float(val)        
+    def do_brtw(self, val):
+        """Set the brightness for the White channel. Range: 0.00-1.00"""
+        self.datastore.rgbw_brightness[3]=float(val)
 
 class ExampleSession(object):
     def __init__(self, avatar):
