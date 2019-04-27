@@ -2,7 +2,7 @@
 # A single ramp up/down in brightness on the ice blue strips.
 
 import sys, traceback, random
-from numpy import array,full
+from numpy import array, full
 
 class strip_animation():
     def __init__(self,datastore):

@@ -46,27 +46,32 @@ class LED_Control():
             # Update each LED color in the buffer.
             for i in range(self.strip.numPixels()):
                 if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:
-                    #ib=int(self.datastore.strips[i][0])
-                    #ww=int(self.datastore.strips[i][1])
-                    #nw=int(self.datastore.strips[i][2])
-                    #dw=int(self.datastore.strips[i][3])
                     #self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
-                    self.strip._led_data[i]=Color(int(self.datastore.strips[i][0]), \
-                                                  int(self.datastore.strips[i][1]), \
-                                                  int(self.datastore.strips[i][2]), \
-                                                  int(self.datastore.strips[i][3]))   
+ 
+                     self.strip._led_data[i]=(int(self.datastore.strips[i][3]) << 24) | \
+                                             (int(self.datastore.strips[i][0]) << 16) | \
+                                             (int(self.datastore.strips[i][1]) << 8 ) | \
+                                              int(self.datastore.strips[i][2])   
                 else:
-                    #r=int(rowdata[i][0])
-                    #g=int(rowdata[i][1])
-                    #b=int(rowdata[i][2])
-                    #w=int(rowdata[i][3])
                 # Set the LED color buffer value.
                     #self.strip.setPixelColor(i, Color(r,g,b,w))
-                    self.strip._led_data[i]=Color(int(rowdata[i][0]),int(rowdata[i][1]),int(rowdata[i][2]),int(rowdata[i][3]))
+                    self.strip._led_data[i]=(int(rowdata[i][3]) << 24) | \
+                                            (int(rowdata[i][0]) << 16) | \
+                                            (int(rowdata[i][1]) << 8 ) | \
+                                             int(rowdata[i][2])
             # Send the LED color data to the hardware.
             self.strip.show()
         except Exception as err:
             print((self.datastore.strips))
             print(err)
             traceback.print_exc(file=sys.stdout)
+            print(type(self.datastore.strips[i][2]))
 
+
+
+def Color(red, green, blue, white = 0):
+	"""Convert the provided red, green, blue color to a 24-bit color value.
+	Each color component should be a value 0-255 where 0 is the lowest intensity
+	and 255 is the highest intensity.
+	"""
+	return (white << 24) | (red << 16)| (green << 8) | blue
