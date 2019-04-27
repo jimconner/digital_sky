@@ -6,17 +6,17 @@ from numpy import array,full
 
 class animation():
     def __init__(self,datastore):
-        self.sweep_pos=0
+        self.pos=0
         self.max_led=datastore.LED_COUNT
 
     def emit_row(self):
         try:
-            if self.sweep_pos == self.max_led-1:
-                self.sweep_pos = 0
+            if self.pos == self.max_led-1:
+                self.pos = 0
             else:
-                self.sweep_pos += 1
+                self.pos += 1
             row_arr=full((self.max_led,4),0)
-            row_arr[self.sweep_pos]=[255,255,255,255]
+            row_arr[self.pos]=[255,255,255,255]
             return row_arr
         except Exception as err:
             print(err)
