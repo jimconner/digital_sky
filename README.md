@@ -23,7 +23,7 @@ A set of YouTube videos describe the project hardware in detail.
 
 [<img src="images/part3.jpg">](https://www.youtube.com/watch?v=-cvN6kNjJMA)
 
-[<img src="images/part4.jpg">](https://www.youtube.com/watch?v=-cvN6kNjJMA)
+[<img src="images/part4.jpg">](https://youtu.be/3lJlKGOuT2Q)
 
 This repository contains the software component to run the Digital Sky lamps.
 
