@@ -108,7 +108,14 @@ class MQTTService(ClientService):
             self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:add':
             self.log.info("Add a thing")
-            self.datastore.add_animation(payload['slots'][0]['value']['value'])
+            if len(payload['slots']) == 1:
+                self.datastore.add_animation(payload['slots'][0]['value']['value'])
+            elif len(payload['slots']) == 2:
+                self.datastore.add_animation(payload['slots'][0]['value']['value'],payload['slots'][1]['value']['value'])
+            elif len(payload['slots']) == 3:
+                self.datastore.add_animation(payload['slots'][0]['value']['value'],payload['slots'][1]['value']['value'],payload['slots'][2]['value']['value'])
+            else:
+                print('Can only process adding things with 1-3 slots. Code changes needed for anything else.')
         if topic == 'hermes/intent/jimconner:delete':
             self.log.info("Delete a thing")
             self.datastore.del_animation(payload['slots'][0]['value']['value'])

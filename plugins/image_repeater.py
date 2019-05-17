@@ -6,11 +6,15 @@ import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 
 from PIL import Image
 from numpy import array,dstack,full
+from pathlib import Path
 
 class animation():
-    def __init__(self, datastore, img_url, whevs=None):
-        urllib.request.urlretrieve(img_url, "file.jpg")
-        img = Image.open("file.jpg")
+    def __init__(self, datastore, img_name, whevs=None):
+        img_file=sys.path[0]+'/image_cache/'+img_name+'.jpg'
+        if not Path(img_file).is_file():
+            img_url=datastore.IMAGES[img_name]
+            urllib.request.urlretrieve(img_url, img_file)
+        img = Image.open(img_file)
         self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
         img_tmp = array(self.img)
         b_tmp=full((img_tmp.shape[0],img_tmp.shape[1],1),0) # An extra 2D array of single bytes to store 6812B WW pixel data

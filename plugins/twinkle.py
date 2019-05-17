@@ -6,13 +6,17 @@ import sys,time, urllib.request, urllib.parse, urllib.error, traceback, random
 
 from PIL import Image
 from numpy import array,dstack,full
+from pathlib import Path
 
 # Requires an image_url and a 0-3 value to select R,G,B or W respectively.
 class animation():
-    def __init__(self, datastore, img_url, strip):
+    def __init__(self, datastore, img_name, strip):
+        img_file=sys.path[0]+'/image_cache/'+img_name+'.jpg'
+        if not Path(img_file).is_file():
+            img_url=datastore.IMAGES[img_name]
+            urllib.request.urlretrieve(img_url, img_file)
         self.strip=int(strip)
-        urllib.request.urlretrieve(img_url, "file.jpg")
-        img = Image.open("file.jpg")
+        img = Image.open(img_file)
         self.img = img.resize((datastore.LED_COUNT,img.size[0]), Image.ANTIALIAS) # Resize width to match number of pixels.
         img_tmp = array(self.img)
         self.arr=full((img_tmp.shape[0],img_tmp.shape[1],4),0) # An extra 2D array of single bytes to store 6812B WW pixel data

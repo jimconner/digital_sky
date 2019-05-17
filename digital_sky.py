@@ -24,13 +24,14 @@ from core.ssh import *
 from twisted.logger   import (
     Logger, LogLevel, globalLogBeginner, textFileLogObserver, 
     FilteringLogObserver, LogLevelFilterPredicate)
-from settings import *
+from settings import * 
 
 class Datastore_Data(Resource):
     def __init__(self):
         self.LED_COUNT=LED_COUNT  # Total number of addressable pixels (including those which have strips attached)
         self.LAMP_LENGTH=LAMP_LENGTH # The length of each lamp module
         self.STRIP_LEDS=STRIP_LEDS   # The number of pixels at the start of each lamp which are special
+        self.IMAGES=IMAGES # Image name to URL mapping definitions 
         #FUTURE# self.strip_vals = full(int((self.LED_COUNT/self.LAMP_LENGTH)*self.STRIP_LEDS),4),0, dtype=uint8)
         self.strip_vals = array([0,0,0,0], dtype=uint8)
         self.master_brightness = 1.0
@@ -113,10 +114,6 @@ def setLogLevel(namespace=None, levelStr='info'):
     level = LogLevel.levelWithName(levelStr)
     logLevelFilterPredicate.setLogLevelForNamespace(namespace=namespace, level=level)
 
-def newliner():
-    print("")
-    
-    
 if __name__ == "__main__":
     datastore=Datastore_Data()
     portal = portal.Portal(ExampleRealm(datastore))
@@ -138,8 +135,6 @@ if __name__ == "__main__":
     lights=LED_Control(datastore)
     LEDTask = LoopingCall(lights.service_leds)
     LEDTask.start(0.02)
-    NewlineTask = LoopingCall(newliner)
-    NewlineTask.start(1)
     log = Logger()
     startLogging()
     setLogLevel(namespace='mqtt',     levelStr='debug')
