@@ -26,10 +26,17 @@ SERVER_RSA_PUBLIC = 'ssh-keys/ssh_host_rsa_key.pub'
 # Path to RSA SSH keys accepted by the server (copy the id_rsa.pub key(s) of users you permit into this file)
 CLIENT_RSA_PUBLIC = 'ssh-keys/client_rsa.pub'
 
+# Define your preferred images here. These are used by the image_repeater and twinkle plugins. 
+# If using voice control, the names here will need to match the words that Snips knows.
+# Images will be saved with filename to match image name (i.e stars.jpg) to prevent repeated downloads.
+# Here's some random starter images that look pretty. 
+IMAGES={\
+    'stars':'https://images-na.ssl-images-amazon.com/images/I/41J%2BOq%2B2zAL._SX355_.jpg', \
+    'colours':'https://blog.radissonblu.com/wp-content/uploads/2017/03/The_impact_of_colors_image_1.jpg', \
+    'sunset':'https://cdn-blog.queensland.com/wp-content/uploads/2014/08/garry-norris-main-beach-sunrise.jpg', \
+    'sunrise': 'https://jordanrobins.com.au/wp-content/uploads/2017/12/Hyams-Beach-Sunrise-V1.2.jpg', \
+    'rainbows': 'https://i.pinimg.com/originals/c4/48/72/c448728989cb84358d8bb1cacd4813e2.jpg', \
+    'zigzag': 'https://media.paulsmith.com/media/catalog/product/r/n/rnsr-rugc-zigzag-1-detaila.jpg'
+    }
 
-#STARTUP_SCRIPT="""
-#add set_strips
-#add twinkle https://images-na.ssl-images-amazon.com/images/I/41J%2BOq%2B2zAL._SX355_.jpg 3
-# add image_repeater https://blog.radissonblu.com/wp-content/uploads/2017/03/The_impact_of_colors_image_1.jpg
-#"""
 
