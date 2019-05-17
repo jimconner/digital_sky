@@ -26,18 +26,14 @@ class LED_Control():
 
     def service_leds(self):
         try:
-            print(".", end="")
+            # Set up an empty blank row of Strip pixels
             self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
             for animation in self.datastore.strip_animations:
             	self.datastore.strips=maximum(self.datastore.strips, animation.emit_row())
             # Set up an empty blank row of RGBW pixels
             rowdata=full((self.datastore.LED_COUNT,4),0)
-            # XOR on each pixel source effect in turn.
             for animation in self.datastore.animations:
                 rowdata=maximum(rowdata, animation.emit_row())
-            # Pass the resulting rowdata through each filter in turn
-            #for filt in self.datastore.filters:
-            #    rowdata=filt(rowdata)
             # Scale RGBW elements individually (colour tint)
             rowdata=rowdata*self.datastore.rgbw_brightness           
             # Then scale everything by master_brightness
