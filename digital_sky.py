@@ -5,6 +5,7 @@
 # This code will animate a number of WS281x LEDs, and a number of LED Strips driven of WS2811 ICs on the same neopixel bus.
 
 import sys,time, os, urllib.request, urllib.parse, urllib.error, traceback, random, core.subscriber, importlib
+import RPi.GPIO as GPIO
 from PIL import Image
 from numpy import array, bitwise_xor, full, uint8
 from neopixel import *
@@ -41,6 +42,10 @@ class Datastore_Data(Resource):
         self.animations=[]
         self.strip_animations=[]
         self.filters=[]
+        self.power=0
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(15, GPIO.OUT)
+        GPIO.output(15, GPIO.LOW)
         
     def add_animation(self, pluginname, extra=None, extra2=None):
           """ Add an instance of a plugin to the running animations list"""
@@ -69,6 +74,15 @@ class Datastore_Data(Resource):
     def del_by_class(self, plugin):
         print("Removing: ", plugin)
         self.strip_animations.remove(plugin)
+
+    def set_power(self, state):
+        print("Setting Power: ", state)
+        self.power=int(state)
+        if self.power == 0:
+            GPIO.output(15, GPIO.LOW)
+        else:
+            GPIO.output(15, GPIO.HIGH)
+        
                   
 class SSHCLIFactory(factory.SSHFactory):
     protocol = SSHServerTransport

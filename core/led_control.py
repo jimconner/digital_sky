@@ -9,6 +9,7 @@ from neopixel import *
 from filters.make_it_red import make_it_red
 
 # LED strip configuration:
+POWER_PIN      = 15      # GPIO pin which controlls the 36V power supply.
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
@@ -26,37 +27,38 @@ class LED_Control():
 
     def service_leds(self):
         try:
-            # Set up an empty blank row of Strip pixels
-            self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
-            for animation in self.datastore.strip_animations:
-            	self.datastore.strips=maximum(self.datastore.strips, animation.emit_row())
-            # Set up an empty blank row of RGBW pixels
-            rowdata=full((self.datastore.LED_COUNT,4),0)
-            for animation in self.datastore.animations:
-                rowdata=maximum(rowdata, animation.emit_row())
-            # Scale RGBW elements individually (colour tint)
-            rowdata=rowdata*self.datastore.rgbw_brightness           
-            # Then scale everything by master_brightness
-            rowdata=rowdata*float(self.datastore.master_brightness)
-            rowdata=uint8(rowdata)
-            # Update each LED color in the buffer.
-            for i in range(self.strip.numPixels()):
-                if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:
-                    #self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
- 
-                     self.strip._led_data[i]=(int(self.datastore.strips[i][3]) << 24) | \
-                                             (int(self.datastore.strips[i][0]) << 16) | \
-                                             (int(self.datastore.strips[i][1]) << 8 ) | \
-                                              int(self.datastore.strips[i][2])   
-                else:
-                # Set the LED color buffer value.
-                    #self.strip.setPixelColor(i, Color(r,g,b,w))
-                    self.strip._led_data[i]=(int(rowdata[i][3]) << 24) | \
-                                            (int(rowdata[i][0]) << 16) | \
-                                            (int(rowdata[i][1]) << 8 ) | \
-                                             int(rowdata[i][2])
-            # Send the LED color data to the hardware.
-            self.strip.show()
+            if self.datastore.power != 0: 
+                # Set up an empty blank row of Strip pixels
+                self.datastore.strips=full((self.datastore.LED_COUNT,4),0)
+                for animation in self.datastore.strip_animations:
+                    self.datastore.strips=maximum(self.datastore.strips, animation.emit_row())
+                # Set up an empty blank row of RGBW pixels
+                rowdata=full((self.datastore.LED_COUNT,4),0)
+                for animation in self.datastore.animations:
+                    rowdata=maximum(rowdata, animation.emit_row())
+                # Scale RGBW elements individually (colour tint)
+                rowdata=rowdata*self.datastore.rgbw_brightness           
+                # Then scale everything by master_brightness
+                rowdata=rowdata*float(self.datastore.master_brightness)
+                rowdata=uint8(rowdata)
+                # Update each LED color in the buffer.
+                for i in range(self.strip.numPixels()):
+                    if i % self.datastore.LAMP_LENGTH < self.datastore.STRIP_LEDS:
+                        #self.strip.setPixelColor(i, Color(ib,ww,nw,dw))
+     
+                         self.strip._led_data[i]=(int(self.datastore.strips[i][3]) << 24) | \
+                                                 (int(self.datastore.strips[i][0]) << 16) | \
+                                                 (int(self.datastore.strips[i][1]) << 8 ) | \
+                                                  int(self.datastore.strips[i][2])   
+                    else:
+                    # Set the LED color buffer value.
+                        #self.strip.setPixelColor(i, Color(r,g,b,w))
+                        self.strip._led_data[i]=(int(rowdata[i][3]) << 24) | \
+                                                (int(rowdata[i][0]) << 16) | \
+                                                (int(rowdata[i][1]) << 8 ) | \
+                                                 int(rowdata[i][2])
+                # Send the LED color data to the hardware.
+                self.strip.show()
         except Exception as err:
             print((self.datastore.strips))
             print(err)
