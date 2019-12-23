@@ -63,9 +63,6 @@ class LED_Control():
             print((self.datastore.strips))
             print(err)
             traceback.print_exc(file=sys.stdout)
-            print(type(self.datastore.strips[i][2]))
-
-
 
 def Color(red, green, blue, white = 0):
 	"""Convert the provided red, green, blue color to a 24-bit color value.
