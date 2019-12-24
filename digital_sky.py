@@ -33,8 +33,8 @@ class Datastore_Data(Resource):
         self.LAMP_LENGTH=LAMP_LENGTH # The length of each lamp module
         self.STRIP_LEDS=STRIP_LEDS   # The number of pixels at the start of each lamp which are special
         self.IMAGES=IMAGES # Image name to URL mapping definitions 
-        #FUTURE# self.strip_vals = full(int((self.LED_COUNT/self.LAMP_LENGTH)*self.STRIP_LEDS),4),0, dtype=uint8)
         self.strip_vals = array([0,0,0,0], dtype=uint8)
+        self.fairy_vals = array([32,32,32,32], dtype=uint8)
         self.master_brightness = 1.0
         self.rgbw_brightness = [1.0,1.0,1.0,1.0]
         self.strips = full((self.LED_COUNT,4),0)

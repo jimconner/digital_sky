@@ -89,6 +89,12 @@ class MQTTService(ClientService):
             print("Snips is listening")
             if self.datastore.power == 1:
                 self.datastore.add_animation('pulse')
+        if topic == 'hermes/intent/jimconner:fairy':
+            print("Fairy Light Percentage")
+            if self.datastore.power == 0:
+                self.datastore.set_power(1)
+            percentage=int(payload['slots'][0]['value']['value']*2.55)
+            self.datastore.fairy_vals=[percentage, percentage, percentage, percentage]
         if topic == 'hermes/intent/jimconner:natural':
             print("Natural White")
             if self.datastore.power == 0:
@@ -116,6 +122,7 @@ class MQTTService(ClientService):
             self.datastore.strip_animations = all_the_data['strip_animations']
             self.datastore.filters = all_the_data['filters']
             self.datastore.strip_vals = all_the_data['strip_vals']
+            self.datastore.fairy_vals = all_the_data['fairy_vals']
             self.datastore.set_power(all_the_data['power'])
         if topic == 'hermes/intent/jimconner:save':
             self.log.info("Save Preset")
@@ -124,6 +131,7 @@ class MQTTService(ClientService):
                             'strip_animations' : self.datastore.strip_animations,
                             'filters' : self.datastore.filters,
                             'strip_vals' : self.datastore.strip_vals,
+                            'fairy_vals' : self.datastore.fairy_vals,
                             'power' : self.datastore.power }
             pickle.dump(all_the_data, open('presets/'+payload['slots'][0]['rawValue'], 'wb'))
         if topic == 'hermes/intent/jimconner:power':

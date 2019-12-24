@@ -129,6 +129,10 @@ class CLIProtocol(protocol.Protocol):
           """ Add an instance of a plugin to the running animations list"""
           self.datastore.add_animation(pluginname, extra, extra2)
                   	
+    def do_power(self, state):
+          """ Add an instance of a plugin to the running animations list"""
+          self.datastore.set_power(state)
+
     def do_del(self, pluginname):
           """ Add an instance of a plugin to the running animations list"""
           self.datastore.del_animation(pluginname)
