@@ -95,26 +95,36 @@ class MQTTService(ClientService):
                 self.datastore.set_power(1)
             percentage=int(payload['slots'][0]['value']['value']*2.55)
             self.datastore.fairy_vals=[percentage, percentage, percentage, percentage]
+            if "fairies" not in self.datastore.animations:
+                self.datastore.add_animation("fairies")
         if topic == 'hermes/intent/jimconner:natural':
             print("Natural White")
             if self.datastore.power == 0:
                 self.datastore.set_power(1)
             self.datastore.strip_vals[0]=int(payload['slots'][0]['value']['value']*2.55)
+            if "set_strips" not in self.datastore.animations:
+                self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:daylight':
             self.log.info("Daylight White")
             if self.datastore.power == 0:
                 self.datastore.set_power(1)
             self.datastore.strip_vals[1]=int(payload['slots'][0]['value']['value']*2.55)
+            if "set_strips" not in self.datastore.animations:
+                self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:blue':
             self.log.info("Ice Blue")
             if self.datastore.power == 0:
                 self.datastore.set_power(1)
             self.datastore.strip_vals[2]=int(payload['slots'][0]['value']['value']*2.55)
+            if "set_strips" not in self.datastore.animations:
+                self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:warm':
             self.log.info("Warm White")
             if self.datastore.power == 0:
                 self.datastore.set_power(1)
             self.datastore.strip_vals[3]=int(payload['slots'][0]['value']['value']*2.55)
+            if "set_strips" not in self.datastore.animations:
+                self.datastore.add_animation("set_strips")
         if topic == 'hermes/intent/jimconner:load':
             self.log.info("Load Preset")
             all_the_data = pickle.load(open('presets/'+payload['slots'][0]['rawValue'], 'rb'))
@@ -154,10 +164,10 @@ class MQTTService(ClientService):
             self.log.info("Delete")
             if payload['slots'][0]['value']['value'] == 'everything':
                 self.datastore.strip_vals=[0,0,0,0]
+                self.datastore.fairy_vals=[32,32,32,32]
                 self.datastore.animations=[]
                 self.datastore.filters=[]
                 self.datastore.strip_animations=[]
-                self.datastore.add_animation("set_strips")
             else:
                 self.datastore.del_animation(payload['slots'][0]['value']['value'])
         if topic == 'hermes/intent/jimconner:brightness':
